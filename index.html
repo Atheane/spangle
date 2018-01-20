@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> CV Game - Elodie Royant</title>
+
+  <style>
+
+    html, body {
+      width:  100%;
+      height: 100%;
+      margin: 0px;
+    }
+
+    * { padding: 0; margin: 0; }
+
+  </style>
+
+  <script>
+
+  var canvas, ctx;
+  var drawn;
+
+  // background object
+  var background = {
+    src: './assets/backgrounds/background_02_parallax_01.png',
+    init: function() {
+            var img = new Image()
+            img.src = this.src;
+            return img;
+          },
+    draw: function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // ctx.restore();
+        var img = this.init();
+        img.addEventListener('load', function() {
+          ctx.globalCompositeOperation = "destination-over";
+          ctx.drawImage(img, 0, 0);
+          ctx.save();
+        });
+    }
+  }
+
+  // spaceSphip object
+  // It inherits from background object method init()
+  var spaceShip = Object.create(background);
+  spaceShip.src = './assets/spaceships/enemy-defense.png';
+  spaceShip.x = window.innerWidth/2 - 100;
+  spaceShip.y = window.innerHeight*0.9 - 100;
+  spaceShip.width = window.innerWidth/14;
+  // TODO
+  spaceShip.height = spaceShip.width;
+  spaceShip.dx = 5;
+  spaceShip.dy = 5;
+  // new draw method (resizing, no destination-over)
+  spaceShip.draw = function() {
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // restore and save before each new draw : avoid redrawing background each time
+    // ctx.restore();
+    var img = this.init();
+    var that = this;
+    img.addEventListener('load', function() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      background.draw();
+      ctx.drawImage(img, that.x, that.y, that.width, that.height);
+      that.x += that.dx;
+      that.y += that.dy;
+    });
+  };
+  // adding a move method
+
+  var start;
+  var pause;
+
+  var gameLoop = function(timestamp) {
+    if (!start) { start = timestamp; }
+    // if more than 150 ms since last timestamp
+    if (timestamp - start >= 150) {
+      start = timestamp;
+      background.draw();
+      spaceShip.draw();
+    }
+    if (!pause) {
+      window.requestAnimationFrame(gameLoop);
+    }
+  }
+
+  // Events Handlers
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('loaded');
+    canvas = document.getElementById("canvas");
+    ctx = canvas.getContext('2d');
+    ctx.canvas.width  = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
+    gameLoop();
+  });
+
+ document.addEventListener('keydown', function() {
+    pause = false;
+    gameLoop(0);
+  });
+
+  document.addEventListener('keyup', function() {
+    pause = true;
+    gameLoop(0);
+  });
+
+
+
+  </script>
+</head>
+
+<body>
+
+  <div id="container">
+    <canvas id="canvas" >
+      "Your browser does not support canvas :("
+    </canvas>
+  </div>
+
+
+</body>
+
+</html>
+
