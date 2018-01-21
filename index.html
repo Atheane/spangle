@@ -14,11 +14,25 @@
 
     * { padding: 0; margin: 0; }
 
+    .container {
+      position: relative;
+    }
+
+    #background {
+      position: absolute;
+      z-index: 1;
+    }
+
+    #foreground {
+      position: absolute;
+      z-index: 2;
+    }
+
   </style>
 
   <script>
 
-  var canvas, ctx;
+  var bg, ctxBg, canvas, ctx;
   var drawn;
 
   // background object
@@ -30,13 +44,13 @@
             return img;
           },
     draw: function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // ctx.restore();
+        ctxBg.clearRect(0, 0, bg.width, bg.height);
+        // ctxBg.restore();
         var img = this.init();
         img.addEventListener('load', function() {
-          ctx.globalCompositeOperation = "destination-over";
-          ctx.drawImage(img, 0, 0);
-          ctx.save();
+          // ctxBg.globalCompositeOperation = "destination-over";
+          ctxBg.drawImage(img, 0, 0);
+          ctxBg.save();
         });
     }
   }
@@ -61,13 +75,12 @@
     var that = this;
     img.addEventListener('load', function() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      background.draw();
+      // ctx.globalCompositeOperation = "source-over";
       ctx.drawImage(img, that.x, that.y, that.width, that.height);
       that.x += that.dx;
       that.y += that.dy;
     });
   };
-  // adding a move method
 
   var start;
   var pause;
@@ -77,7 +90,6 @@
     // if more than 150 ms since last timestamp
     if (timestamp - start >= 150) {
       start = timestamp;
-      background.draw();
       spaceShip.draw();
     }
     if (!pause) {
@@ -88,10 +100,18 @@
   // Events Handlers
   document.addEventListener('DOMContentLoaded', function() {
     console.log('loaded');
-    canvas = document.getElementById("canvas");
+    bg = document.getElementById("background");
+    ctxBg = bg.getContext('2d');
+    bg.width  = window.innerWidth;
+    bg.height = window.innerHeight;
+
+    canvas = document.getElementById("foreground");
     ctx = canvas.getContext('2d');
-    ctx.canvas.width  = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    background.draw();
+    console.log("bcg drawn");
     gameLoop();
   });
 
@@ -113,9 +133,13 @@
 <body>
 
   <div id="container">
-    <canvas id="canvas" >
+    <canvas id="background" >
       "Your browser does not support canvas :("
     </canvas>
+    <canvas id="foreground">
+      "Your browser does not support canvas :("
+    </canvas>
+    <!-- https://www.html5rocks.com/en/tutorials/canvas/performance/ -->
   </div>
 
 
