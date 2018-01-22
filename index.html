@@ -45,41 +45,62 @@
           },
     draw: function() {
         ctxBg.clearRect(0, 0, bg.width, bg.height);
-        // ctxBg.restore();
         var img = this.init();
         img.addEventListener('load', function() {
-          // ctxBg.globalCompositeOperation = "destination-over";
           ctxBg.drawImage(img, 0, 0);
           ctxBg.save();
         });
     }
   }
 
+  var i = 1;
+
   // spaceSphip object
   // It inherits from background object method init()
   var spaceShip = Object.create(background);
-  spaceShip.src = './assets/spaceships/enemy-defense.png';
+  spaceShip.src = './assets/spaceships/EnemyDefense.png';
+
   spaceShip.x = window.innerWidth/2 - 100;
   spaceShip.y = window.innerHeight*0.9 - 100;
-  spaceShip.width = window.innerWidth/14;
-  // TODO
-  spaceShip.height = spaceShip.width;
-  spaceShip.dx = 5;
-  spaceShip.dy = 5;
+
+  spaceShip.dx = 10;
+  spaceShip.dy = 10;
+
+  spaceShip.boundariesX = [0, 2048, 4096];
   // new draw method (resizing, no destination-over)
   spaceShip.draw = function() {
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
     // restore and save before each new draw : avoid redrawing background each time
-    // ctx.restore();
     var img = this.init();
     var that = this;
+    var ratio = img.width/img.height;
+    var height = window.innerWidth/10;
+    var width = height;
+    console.log()
     img.addEventListener('load', function() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // ctx.globalCompositeOperation = "source-over";
-      ctx.drawImage(img, that.x, that.y, that.width, that.height);
-      that.x += that.dx;
-      that.y += that.dy;
+      ctx.drawImage(img, spaceShip.boundariesX[i], 0, img.width/spaceShip.boundariesX.length, img.height, that.x, that.y, width, height);
     });
+  };
+
+
+  var rightPressed, leftPressed, upPressed, downPressed;
+
+  spaceShip.move = function(key) {
+    var img = this.init();
+    if (leftPressed) {
+      this.x -= this.dx;
+      (i > 0) ? i-=1 : i=0;
+    }
+    if (rightPressed) {
+      this.x += this.dx;
+      (i < 2) ? i+=1 : i=2;
+    }
+    if (upPressed) {
+      this.y -= this.dy;
+    }
+    if (downPressed) {
+      this.y += this.dy;
+    }
   };
 
   var start;
@@ -88,7 +109,7 @@
   var gameLoop = function(timestamp) {
     if (!start) { start = timestamp; }
     // if more than 150 ms since last timestamp
-    if (timestamp - start >= 150) {
+    if (timestamp - start >= 5) {
       start = timestamp;
       spaceShip.draw();
     }
@@ -111,17 +132,42 @@
     canvas.height = window.innerHeight;
 
     background.draw();
-    console.log("bcg drawn");
-    gameLoop();
-  });
-
- document.addEventListener('keydown', function() {
-    pause = false;
     gameLoop(0);
   });
 
-  document.addEventListener('keyup', function() {
+
+ document.addEventListener('keydown', function(e) {
+    pause = false;
+    spaceShip.move(e.keyCode);
+    if(e.keyCode == 39) {
+      rightPressed = true;
+    }
+    if(e.keyCode == 37) {
+      leftPressed = true;
+    }
+    if(e.keyCode == 40) {
+      downPressed = true;
+    }
+    if(e.keyCode == 38) {
+      upPressed = true;
+    }
+    gameLoop(0);
+  });
+
+  document.addEventListener('keyup', function(e) {
     pause = true;
+    if(e.keyCode == 39) {
+      rightPressed = false;
+    }
+    if(e.keyCode == 37) {
+      leftPressed = false;
+    }
+    if(e.keyCode == 40) {
+      downPressed = false;
+    }
+    if(e.keyCode == 38) {
+      upPressed = false;
+    }
     gameLoop(0);
   });
 
