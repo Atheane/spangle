@@ -54,6 +54,7 @@
   }
 
   var i = 1;
+  var j = 0;
 
   // spaceSphip object
   // It inherits from background object method init()
@@ -67,6 +68,8 @@
   spaceShip.dy = 10;
 
   spaceShip.boundariesX = [0, 2048, 4096];
+  spaceShip.boundariesY = [0, 2048, 4096, 6144];
+
   // new draw method (resizing, no destination-over)
   spaceShip.draw = function() {
     // restore and save before each new draw : avoid redrawing background each time
@@ -75,33 +78,52 @@
     var ratio = img.width/img.height;
     var height = window.innerWidth/10;
     var width = height;
-    console.log()
     img.addEventListener('load', function() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, spaceShip.boundariesX[i], 0, img.width/spaceShip.boundariesX.length, img.height, that.x, that.y, width, height);
+      ctx.drawImage(img, spaceShip.boundariesX[i], spaceShip.boundariesY[j], img.width/spaceShip.boundariesX.length, img.height/spaceShip.boundariesY.length, that.x, that.y, width, height);
     });
   };
 
 
-  var rightPressed, leftPressed, upPressed, downPressed;
+  var rightPressed, leftPressed, upPressed, downPressed, mitraillettePressed, roquettePressed;
 
-  spaceShip.move = function(key) {
-    var img = this.init();
+   // && (delayM < Date.now() - 5000)
+
+  spaceShip.move = function() {
     if (leftPressed) {
       this.x -= this.dx;
       (i > 0) ? i-=1 : i=0;
     }
-    if (rightPressed) {
+    else if (rightPressed) {
       this.x += this.dx;
       (i < 2) ? i+=1 : i=2;
     }
     if (upPressed) {
       this.y -= this.dy;
     }
-    if (downPressed) {
+    else if (downPressed) {
       this.y += this.dy;
     }
   };
+
+  spaceShip.shoot = function() {
+    if (mitraillettePressed && !roquettePressed) {
+      console.log("j 1");
+      j = 1;
+    }
+    else if (!mitraillettePressed && roquettePressed) {
+      j = 2;
+      console.log("j 2");
+    }
+    else if (mitraillettePressed && roquettePressed) {
+      j = 3;
+      console.log("j 3");
+    }
+    else if (!mitraillettePressed && !roquettePressed) {
+      j = 0;
+      console.log("j 0");
+    }
+  }
 
   var start;
   var pause;
@@ -112,6 +134,9 @@
     if (timestamp - start >= 5) {
       start = timestamp;
       spaceShip.draw();
+      spaceShip.move();
+      spaceShip.shoot();
+
     }
     if (!pause) {
       window.requestAnimationFrame(gameLoop);
@@ -135,38 +160,51 @@
     gameLoop(0);
   });
 
+  var delayM = Date.now();
+  var delayR = Date.now();
 
  document.addEventListener('keydown', function(e) {
     pause = false;
-    spaceShip.move(e.keyCode);
-    if(e.keyCode == 39) {
+    if (e.keyCode === 39) {
       rightPressed = true;
     }
-    if(e.keyCode == 37) {
+    else if(e.keyCode === 37) {
       leftPressed = true;
     }
-    if(e.keyCode == 40) {
+    if(e.keyCode === 40) {
       downPressed = true;
     }
-    if(e.keyCode == 38) {
+    else if(e.keyCode === 38) {
       upPressed = true;
+    }
+    if (e.keyCode === 77) {
+      mitrailettePressed = true;
+    }
+    if (e.keyCode === 82) {
+      roquettePressed = true;
     }
     gameLoop(0);
   });
 
   document.addEventListener('keyup', function(e) {
     pause = true;
-    if(e.keyCode == 39) {
+    if(e.keyCode === 39) {
       rightPressed = false;
     }
-    if(e.keyCode == 37) {
+    else if(e.keyCode === 37) {
       leftPressed = false;
     }
-    if(e.keyCode == 40) {
+    if(e.keyCode === 40) {
       downPressed = false;
     }
-    if(e.keyCode == 38) {
+    else if(e.keyCode === 38) {
       upPressed = false;
+    }
+    if (e.keyCode === 77) {
+      mitrailettePressed = false;
+    }
+    if (e.keyCode === 82) {
+      roquettePressed = false;
     }
     gameLoop(0);
   });
