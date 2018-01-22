@@ -36,7 +36,7 @@
 
 (function() {
   var bg, ctxBg, canvas, ctx;
-  var drawn;
+  var totalSeconds = 0;
 
   ///////////////////////////////////////////////////////////////////
   //                      BACKGROUND OBJECT
@@ -51,14 +51,27 @@
             return img;
           },
     draw: function() {
-        ctxBg.clearRect(0, 0, bg.width, bg.height);
-        var img = this.init();
-        img.addEventListener('load', function() {
-          ctxBg.globalCompositeOperation = 'destination-over';
-          ctxBg.drawImage(img, 0, 0);
-          ctxBg.save();
-        });
-    }
+
+            var img = this.init();
+
+            img.addEventListener('load', function() {
+              totalSeconds += 100;
+              console.log(totalSeconds);
+
+              var vy = 100; // the background scrolls with a speed of 100 pixels/sec
+              var numImages = Math.ceil(bg.height / img.height) + 1;
+              console.log(numImages);
+              var ypos = img.height % (totalSeconds * vy);
+
+              ctxBg.save();
+              ctxBg.translate(0, -ypos);
+
+              for (var j = 0; j < numImages; j++) {
+                ctxBg.drawImage(img, 0, j * img.height);
+               }
+              ctxBg.restore();
+            });
+          }
   }
 
 
@@ -95,7 +108,7 @@
     var width = height;
     img.addEventListener('load', function() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctxBg.globalCompositeOperation = 'source-over';
+      // ctxBg.globalCompositeOperation = 'source-over';
       ctx.drawImage(img, spaceShip.boundariesX[i], spaceShip.boundariesY[j], img.width/spaceShip.boundariesX.length, img.height/spaceShip.boundariesY.length, that.x, that.y, width, height);
     });
   };
@@ -137,10 +150,6 @@
   }
 
 
-
-
-
-
 ///////////////////////////////////////////////////////////////////
 //                            GAME LOOP
 ///////////////////////////////////////////////////////////////////
@@ -172,7 +181,6 @@
 ///////////////////////////////////////////////////////////////////
 
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('loaded');
     bg = document.getElementById("background");
     ctxBg = bg.getContext('2d');
     bg.width  = window.innerWidth;
