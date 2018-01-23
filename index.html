@@ -30,14 +30,12 @@
     }
 
   </style>
-
   <script>
 
 'use strict';
 
 (function() {
   var bg, ctxBg, canvas, ctx;
-  var lastSpaceShipY;
   var totalSeconds = 0;
 
   ///////////////////////////////////////////////////////////////////
@@ -47,14 +45,17 @@
 
   var background = {
     src: './assets/backgrounds/background_02_parallax_01.png',
+    x: 0,
+    y: 0,
     init: function() {
             var img = new Image();
             img.src = this.src;
             return img;
-          },
-    draw: function(delay) {
+    },
+    moveWithTime: function(delay) {
 
             var img = this.init();
+            var that = this;
 
             img.addEventListener('load', function() {
               totalSeconds += delay;
@@ -65,21 +66,27 @@
               var numImagesX = Math.ceil(bg.width / img.width) + 1;
               var numImagesY = Math.ceil(bg.height / img.height) + 1;
 
-              var xpos =  (totalSeconds * vx + spaceShip.x*0.4)  % img.width ;
-              var ypos = (canvas.height - totalSeconds * vy) % img.height;
+              var xpos =  (totalSeconds * vx + spaceShip.x*0.4) % img.width ;
+              var ypos = (bg.height - totalSeconds * vy) % img.height;
 
               ctxBg.save();
               ctxBg.translate(-xpos, -ypos);
 
               for (var i = 0; i < numImagesX; i++) {
                 for (var j = 0; j < numImagesY; j++) {
-                  ctxBg.drawImage(img, i * img.width, -j * img.height - spaceShip.y*0.4);
+                  that.x = i * img.width;
+                  that.y = -j * img.height - spaceShip.y*0.4;
+                  ctxBg.drawImage(img, that.x, that.y);
                  }
                }
               ctxBg.restore();
-              lastSpaceShipY = spaceShip.y;
             });
-          }
+    },
+    moveWithCollision: function() {
+                  if (spaceShip.x < 20 || spaceShip.x > bg.width - 20) {
+                    console.log("collision !");
+                  }
+    }
   }
 
 
@@ -103,6 +110,9 @@
 
   spaceShip.v = 1.3;
 
+  spaceShip.width = 0;
+  spaceShip.height = 0;
+
   spaceShip.boundariesX = [0, 2048, 4096];
   spaceShip.boundariesY = [0, 2048, 4096, 6144];
 
@@ -111,13 +121,14 @@
     // restore and save before each new draw : avoid redrawing background each time
     var img = this.init();
     var that = this;
-    var ratio = img.width/img.height;
-    var height = window.innerWidth/10;
-    var width = height;
+
+    that.height = window.innerWidth/10;
+    that.width = that.height;
+
     img.addEventListener('load', function() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // ctxBg.globalCompositeOperation = 'source-over';
-      ctx.drawImage(img, spaceShip.boundariesX[i], spaceShip.boundariesY[j], img.width/spaceShip.boundariesX.length, img.height/spaceShip.boundariesY.length, that.x, that.y, width, height);
+      ctx.drawImage(img, spaceShip.boundariesX[i], spaceShip.boundariesY[j], img.width/spaceShip.boundariesX.length, img.height/spaceShip.boundariesY.length, that.x, that.y, that.width, that.height);
     });
   };
 
@@ -170,12 +181,16 @@
     // if more than 50 ms since last timestamp
     if (timestamp - start >= 5) {
       // flowing speed depends on the spaceship speed
-      background.draw((timestamp - start) / 1000);
+      background.moveWithTime((timestamp - start) / 1000);
       start = timestamp;
       spaceShip.draw();
       spaceShip.move();
       spaceShip.shoot();
     }
+    if (spaceShip.x < 20 || spaceShip.x > bg.width - spaceShip.width) {
+      console.log("collision !");
+    }
+    console.log(spaceShip.x);
     window.requestAnimationFrame(gameLoop);
 
   }
@@ -197,9 +212,8 @@
     ctx = canvas.getContext('2d');
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
-    spaceShip.draw();
 
-    // background.draw(0);
+    background.moveWithCollision();
     gameLoop(0);
 
   });
