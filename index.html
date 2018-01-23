@@ -18,14 +18,18 @@
       position: relative;
     }
 
-    #background {
+    canvas {
       position: absolute;
+      top: 0px;
+      left: 0px;
+      background: transparent;
+    }
+
+    #background {
       z-index: 1;
-      animation-direction: reverse;
     }
 
     #foreground {
-      position: absolute;
       z-index: 2;
     }
 
@@ -263,10 +267,10 @@
 
   <div id="container">
     <canvas id="background" >
-      "Your browser does not support canvas :("
+      Your browser does not support canvas :(, please try with another one!
     </canvas>
     <canvas id="foreground">
-      "Your browser does not support canvas :("
+      Your browser does not support canvas :(, please try with another one!
     </canvas>
     <!-- https://www.html5rocks.com/en/tutorials/canvas/performance/ -->
   </div>
