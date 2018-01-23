@@ -6,7 +6,7 @@
 
   <style>
 
-    html, body {
+/*    html, body {
       width:  100%;
       height: 100%;
       margin: 0px;
@@ -16,7 +16,7 @@
 
     .container {
       position: relative;
-    }
+    }*/
 
     canvas {
       position: absolute;
@@ -277,6 +277,13 @@
 }());
 
   </script>
+  <script src='./js/background.js'></script>
+  <script>
+    document.addEventListener('load', function(){
+      game.init();
+      game.start();
+    });
+  </script>
 </head>
 
 <body>
@@ -290,7 +297,6 @@
     </canvas>
     <!-- https://www.html5rocks.com/en/tutorials/canvas/performance/ -->
   </div>
-
 
 </body>
 
