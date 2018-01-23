@@ -45,8 +45,6 @@
 
   var background = {
     src: './assets/backgrounds/background_02_parallax_01.png',
-    x: 0,
-    y: 0,
     init: function() {
             var img = new Image();
             img.src = this.src;
@@ -59,33 +57,38 @@
 
             img.addEventListener('load', function() {
               totalSeconds += delay;
+              // console.log("totalSeconds :" + totalSeconds);
 
-              var vx = 1;
               var vy = 100; // the background scrolls with a speed of 100 pixels/sec
 
               var numImagesX = Math.ceil(bg.width / img.width) + 1;
+              // console.log("numImagesX :" + numImagesX);
+              // console.log("bg.width :" + bg.width);
+              // console.log("img.width :" + img.width);
+
               var numImagesY = Math.ceil(bg.height / img.height) + 1;
 
-              var xpos =  (totalSeconds * vx + spaceShip.x*0.4) % img.width ;
-              var ypos = (bg.height - totalSeconds * vy) % img.height;
+              that.xpos =  (spaceShip.x*0.4) % img.width ;
+              // console.log("xpos :" + that.xpos);
+
+              that.ypos = (bg.height - totalSeconds * vy) % img.height;
 
               ctxBg.save();
-              ctxBg.translate(-xpos, -ypos);
+              ctxBg.translate(-that.xpos, -that.ypos);
 
               for (var i = 0; i < numImagesX; i++) {
                 for (var j = 0; j < numImagesY; j++) {
-                  that.x = i * img.width;
-                  that.y = -j * img.height - spaceShip.y*0.4;
-                  ctxBg.drawImage(img, that.x, that.y);
+                  var x = i * img.width;
+                  var y = -j * img.height - spaceShip.y*0.4;
+                  ctxBg.drawImage(img, x, y);
                  }
                }
               ctxBg.restore();
             });
     },
     moveWithCollision: function() {
-                  if (spaceShip.x < 20 || spaceShip.x > bg.width - 20) {
-                    console.log("collision !");
-                  }
+              // this.alpha = () ? 1.2 : 0.4;
+
     }
   }
 
@@ -187,10 +190,9 @@
       spaceShip.move();
       spaceShip.shoot();
     }
-    if (spaceShip.x < 20 || spaceShip.x > bg.width - spaceShip.width) {
+    if (spaceShip.x < 20 || spaceShip.x > bg.width - spaceShip.width - 20) {
       console.log("collision !");
     }
-    console.log(spaceShip.x);
     window.requestAnimationFrame(gameLoop);
 
   }
@@ -213,7 +215,7 @@
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    background.moveWithCollision();
+    background.moveWithCollision(bg);
     gameLoop(0);
 
   });
