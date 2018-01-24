@@ -26,11 +26,15 @@
     }
 
     #background {
-      z-index: 1;
+      z-index: -2;
     }
 
-    #foreground {
-      z-index: 2;
+    #main {
+      z-index: -1;
+    }
+
+    #player {
+      z-index: 0;
     }
 
   </style>
@@ -48,18 +52,17 @@
 (function() {
 
 
-  // objet litéral servant à stocker toutes les images <img>
-  // pour ne pas avoir à la regénérer à chaque fois qu'on en a besoin
+  // toDO faire une fonction constructeur, pour etre plus libres sur la structure
 
   var images = {
     background: new Image(),
-    // spaceShip: new Image()
+    player: new Image(),
+    // bullet: new Image()
   };
 
   // pour charger l'image en mémoire
   images.background.src = './assets/backgrounds/background_02_parallax_01.png';
-  // images.spaceShip.src = './assets/spaceships/EnemyDefense.png';
-
+  images.player.src = './assets/spaceships/EnemyDefense.png';
 
   //////////////////////////////////////////////////////////////////
   //                  Objets dessinés sur les canvas              //
@@ -68,9 +71,11 @@
   // Prototype de l'ensemble des futurs dessins
   // TO-DO : fonction usine pour minimiser l'espace mémoire ?
   var Dessin = function() {
-      this.init = function(x, y) {
+      this.init = function(x, y, width, height) {
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
       }
       this.speed = 0;
       this.canvasWidth = 0;
@@ -88,194 +93,75 @@
   //////////////////////////// Premier enfant : objet background
   // Fonction constructeur background
   var Background = function() {
-    this.speed = 10;
+    this.speed = 1;
+    this.totalSeconds = 0;
+    this.shiftCameraX = 0;
+    this.shiftCameraY = 0;
   }
 
   Background.prototype = dessin;
 
   Background.prototype.draw = function() {
     // décale le background en fonction de la vitesse indiquée
-    this.y += this.speed;
+    // this.y += this.speed;
 
-    var numImagesY = Math.ceil(this.canvasHeight / images.background.height) + 1;
+    // // la propriété context est définie dans la fonction constructeur Game
+    // // this.context.drawImage(images.background, this.x, this.y);
+    // this.context.drawImage(images.background, this.x, this.y - this.canvasHeight);
 
-    // la propriété context est définie dans la fonction constructeur Game
-    // this.context.drawImage(images.background, this.x, this.y);
-    this.context.drawImage(images.background, this.x, this.y - this.canvasHeight);
+    // if (this.y >= this.canvasHeight) {
+    //   this.y = 0;
+    // }
 
-    if (this.y >= this.canvasHeight) {
-      this.y = 0;
-    }
+    this.totalSeconds += this.speed;
+    var vx = 1; // number pixels per sec
+    var vy = 10; // number pixels per sec
+    var numImagesX = Math.ceil((this.canvasWidth + Math.abs(this.shiftCameraX) + Math.abs(this.shiftCameraY)) / images.background.width) + 1;
+    var numImagesY = Math.ceil((this.canvasHeight  + Math.abs(this.shiftCameraX) + Math.abs(this.shiftCameraY))/ images.background.height) + 1 ;
+
+    var xpos = this.totalSeconds * vx % images.background.width;
+    var ypos = (this.canvasHeight - this.totalSeconds * vy) % images.background.height;
+    this.context.save();
+    this.context.translate(-xpos, -ypos);
+    for (var i = 0; i < numImagesX; i++) {
+      for (var j = 0; j < numImagesY; j++) {
+        this.x = i * images.background.width;
+        this.y = -j * images.background.height;
+        // var y = -j * img.height - spaceShip.y*0.4;
+        this.context.drawImage(images.background, this.x, this.y);
+       }
+     }
+    this.context.restore();
   };
 
-  // Tous les objets construits avec la fonction constructeur background hériteront de
-  // des proriétés de l'objet dessin
-
-
-  //////////////////////////////////////////////////////////////////////////
-  ///                             Objet JEU                              ///
-  //////////////////////////////////////////////////////////////////////////
-
-  var Game = function() {
-    this.init = function() {
-      this.bg = document.getElementById('background');
-        // vérifier si canvas est bien supporté par le navigateur
-      if (this.bg.getContext) {
-        this.ctxBg = this.bg.getContext('2d');
-        this.bg.width  = window.innerWidth;
-        this.bg.height = window.innerHeight;
-        // on ajoute les propriétés manquantes à Background
-        // utilisées dans la méthode draw
-        Background.prototype.context = this.ctxBg;
-        Background.prototype.canvasWidth = this.bg.width;
-        Background.prototype.canvasHeight = this.bg.height;
-
-        this.background = new Background();
-        this.background.init(0,0);
-        return true;
-      }
-      else {
-        return false;
-      }
-    };
-    // Start the animation loop
-    this.start = function() {
-      gameLoop(0);
-    };
-  }
-
-  var game = new Game();
-
-  var start;
-
-  //////////////////////////////////////////////////////////////////////////
-  ///                         Animation JEU                              ///
-  //////////////////////////////////////////////////////////////////////////
-
-
-  var gameLoop = function(timestamp) {
-    if (!start) { start = timestamp; }
-    // if more than 50 ms since last timestamp
-    if (timestamp - start >= 50) {
-      game.background.draw();
-
-      start = timestamp;
-      // spaceShip.draw();
-      // spaceShip.move();
-      // spaceShip.shoot();
-    }
-    // if (spaceShip.x < 20 || spaceShip.x > bg.width - spaceShip.width - 20) {
-    //   // console.log("collision !");
-    // }
-    window.requestAnimationFrame(gameLoop);
-
-  }
-
-
-  ///////////////////////////////////////////////////////////////////
-  //                      EVENTS HANDLERS
-  ///////////////////////////////////////////////////////////////////
-
-  document.addEventListener('DOMContentLoaded', function() {
-
-    game.init();
-    game.start();
-
-    // canvas = document.getElementById("foreground");
-    // ctx = canvas.getContext('2d');
-    // canvas.width  = window.innerWidth;
-    // canvas.height = window.innerHeight;
-
-  });
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-  // var bg, ctxBg, canvas, ctx;
-  // var totalSeconds = 0;
-
-  ///////////////////////////////////////////////////////////////////
-  //                      BACKGROUND OBJECT
-  ///////////////////////////////////////////////////////////////////
-
-
-  // var background = {
-  //   moveWithTime: function(delay) {
-
-  //           var img = images.background;
-  //           var that = this;
-
-  //           img.addEventListener('load', function() {
-  //             totalSeconds += delay;
-
-  //             var vx = 1;
-  //             var vy = 100;
-
-  //             var numImagesX = Math.ceil(bg.width / img.width) + 1;
-
-  //             var numImagesY = Math.ceil(bg.height / img.height) + 1;
-
-  //             var xpos = totalSeconds * vx % img.width;
-  //             var ypos = (bg.height - totalSeconds * vy) % img.height;
-
-  //             ctxBg.save();
-  //             ctxBg.translate(-xpos, -ypos);
-
-  //             for (var i = 0; i < numImagesX; i++) {
-  //               for (var j = 0; j < numImagesY; j++) {
-  //                 var x = i * img.width;
-  //                 var y = -j * img.height;
-  //                 // var y = -j * img.height - spaceShip.y*0.4;
-
-  //                 ctxBg.drawImage(img, x, y);
-  //                }
-  //              }
-  //             ctxBg.restore();
-  //           });
-  //   }
+  // pour gérer les collisions avec le bord d'écran
+  // Background.prototype.move = function() {
+  //   this.context.translate(-200, 0);
+  //   this.shiftCameraX -= 200;
   // }
-
 
   ///////////////////////////////////////////////////////////////////
   //                      SPACE SHIP OBJECT
   ///////////////////////////////////////////////////////////////////
 
-  // var i = 1;
-  // var j = 0;
+  // spaceSphip object
+  // It inherits from background object method init()
+  var Player = function() {
+    this.speed = 10;
+    // this.acceleration = 1.3;
+    this.boundariesX = [0, 2048, 4096];
+    this.boundariesY = [0, 2048, 4096, 6144];
+    this.i = 1;
+    this.j = 0;
+  }
 
-  // // spaceSphip object
-  // // It inherits from background object method init()
-  // var spaceShip = Object.create(background);
+  Player.prototype = dessin;
 
-  // spaceShip.x = window.innerWidth/2 - 100;
-  // spaceShip.y = window.innerHeight*0.9 - 100;
-
-  // spaceShip.dx = 10;
-  // spaceShip.dy = 10;
-
-  // spaceShip.v = 1.3;
-
-  // spaceShip.width = 0;
-  // spaceShip.height = 0;
-
-  // spaceShip.boundariesX = [0, 2048, 4096];
-  // spaceShip.boundariesY = [0, 2048, 4096, 6144];
-
-  // // new draw method (resizing, no destination-over)
-  // spaceShip.draw = function() {
-  //   // restore and save before each new draw : avoid redrawing background each time
-  //   var img = images.spaceShip;
-  //   var that = this;
-
-  //   that.height = window.innerWidth/10;
-  //   that.width = that.height;
-
-  //   img.addEventListener('load', function() {
-  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //     // ctxBg.globalCompositeOperation = 'source-over';
-  //     ctx.drawImage(img, spaceShip.boundariesX[i], spaceShip.boundariesY[j], img.width/spaceShip.boundariesX.length, img.height/spaceShip.boundariesY.length, that.x, that.y, that.width, that.height);
-  //   });
-  // };
+  Player.prototype.draw = function() {
+    // plus économe d'effacer juste un rectangle autour du spaceShip (possible car aux multiples overlay)
+    this.context.clearRect(0, 0, this.width, this.height);
+    this.context.drawImage(images.player, this.boundariesX[this.i], this.boundariesY[this.j], images.player.width/this.boundariesX.length, images.player.height/this.boundariesY.length, this.x, this.y, this.width, this.height);
+  };
 
 
   // var rightPressed, leftPressed, upPressed, downPressed, mitraillettePressed, roquettePressed;
@@ -312,6 +198,100 @@
   //     j = 0;
   //   }
   // }
+
+
+
+  //////////////////////////////////////////////////////////////////////////
+  ///                             Objet JEU                              ///
+  //////////////////////////////////////////////////////////////////////////
+
+  var Game = function() {
+    this.init = function() {
+      this.bgCanvas = document.getElementById('background');
+      this.playerCanvas = document.getElementById('player');
+
+        // vérifier si canvas est bien supporté par le navigateur
+      if (this.bgCanvas.getContext) {
+
+        this.bgContext = this.bgCanvas.getContext('2d');
+        this.playerContext = this.playerCanvas.getContext('2d');
+
+        this.bgCanvas.width  = window.innerWidth;
+        this.bgCanvas.height = window.innerHeight;
+        this.playerCanvas.width  = window.innerWidth;
+        this.playerCanvas.height = window.innerHeight;
+        // on ajoute les propriétés manquantes à Background
+        // utilisées dans la méthode draw
+        Background.prototype.context = this.bgContext;
+        Background.prototype.canvasWidth = this.bgCanvas.width;
+        Background.prototype.canvasHeight = this.bgCanvas.height;
+
+        Player.prototype.context = this.playerContext;
+        Player.prototype.canvasWidth = this.playerCanvas.width;
+        Player.prototype.canvasHeight = this.playerCanvas.height;
+
+        this.background = new Background();
+        this.background.init(0,0);
+
+        this.player = new Player();
+        var playerX = this.playerCanvas.width/2;
+        var playerY = Math.ceil(this.playerCanvas.height*0.9);
+        this.player.init(playerX, playerY, images.player.width, images.player.height);
+        console.log(this.player.width);
+        // TODO : s'assurer que l'image est bien loadée dans images
+        return true;
+      }
+      else {
+        return false;
+      }
+    };
+    // Start the animation loop
+    this.start = function() {
+      gameLoop(0);
+    };
+  }
+
+  var game = new Game();
+
+  var start;
+
+  //////////////////////////////////////////////////////////////////////////
+  ///                         Animation JEU                              ///
+  //////////////////////////////////////////////////////////////////////////
+
+
+  var gameLoop = function(timestamp) {
+    if (!start) { start = timestamp; }
+    // if more than 50 ms since last timestamp
+    if (timestamp - start >= 20) {
+      game.background.draw();
+
+      start = timestamp;
+      // spaceShip.draw();
+      // spaceShip.move();
+      // spaceShip.shoot();
+    }
+    // if (spaceShip.x < 20 || spaceShip.x > bg.width - spaceShip.width - 20) {
+    //   // console.log("collision !");
+    // }
+    window.requestAnimationFrame(gameLoop);
+
+  }
+
+
+  ///////////////////////////////////////////////////////////////////
+  //                      EVENTS HANDLERS
+  ///////////////////////////////////////////////////////////////////
+
+  document.addEventListener('DOMContentLoaded', function() {
+
+    game.init();
+    game.start();
+
+  });
+
+
+
 
 
 
@@ -379,7 +359,10 @@
     <canvas id="background" >
       Your browser does not support canvas :(, please try with another one!
     </canvas>
-    <canvas id="foreground">
+    <canvas id="main">
+      Your browser does not support canvas :(, please try with another one!
+    </canvas>
+    <canvas id="player">
       Your browser does not support canvas :(, please try with another one!
     </canvas>
     <!-- https://www.html5rocks.com/en/tutorials/canvas/performance/ -->
