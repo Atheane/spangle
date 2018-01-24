@@ -61,15 +61,17 @@
     this.background.src = './assets/backgrounds/background_02_parallax_01.png';
     this.player.src = './assets/spaceships/EnemyDefense.png';
 
-    var numImages = 2;
-    var numLoaded = 0;
+    this.counter = 0;
 
-    this.imageLoaded = function() {
-      numLoaded++;
-      if (numLoaded === numImages) {
-        window.init();
-      }
-    }
+    this.background.addEventListener('load', function() {
+      this.counter++;
+    });
+    this.player.addEventListener('load', function() {
+      this.counter++;
+    });
+    // this.bullet.addEventListener('load', function() {
+    //   imageLoaded();
+    // });
 
 
   };
@@ -299,8 +301,12 @@
 
   document.addEventListener('DOMContentLoaded', function() {
 
-    game.init();
-    game.start();
+    if (images.counter === 3) {
+      game.init();
+    }
+    if (game.init()) {
+      game.start();
+    }
 
   });
 
