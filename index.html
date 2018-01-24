@@ -49,20 +49,34 @@
   //                         Gestion des Images                          //
   /////////////////////////////////////////////////////////////////////////
 
-(function() {
+// (function() {
 
 
   // toDO faire une fonction constructeur, pour etre plus libres sur la structure
 
-  var images = {
-    background: new Image(),
-    player: new Image(),
-    // bullet: new Image()
+  var Images = function() {
+    this.background = new Image();
+    this.player = new Image();
+    // this.bullet = new Image()
+    this.background.src = './assets/backgrounds/background_02_parallax_01.png';
+    this.player.src = './assets/spaceships/EnemyDefense.png';
+
+    var numImages = 2;
+    var numLoaded = 0;
+
+    this.imageLoaded = function() {
+      numLoaded++;
+      if (numLoaded === numImages) {
+        window.init();
+      }
+    }
+
+
   };
 
-  // pour charger l'image en mémoire
-  images.background.src = './assets/backgrounds/background_02_parallax_01.png';
-  images.player.src = './assets/spaceships/EnemyDefense.png';
+  var images = new Images;
+  // pour charger les images en mémoire
+
 
   //////////////////////////////////////////////////////////////////
   //                  Objets dessinés sur les canvas              //
@@ -348,7 +362,7 @@
 
  //  });
 
-}());
+// }());
 
   </script>
 </head>
