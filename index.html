@@ -6,7 +6,7 @@
 
   <style>
 
-/*    html, body {
+    html, body {
       width:  100%;
       height: 100%;
       margin: 0px;
@@ -16,7 +16,7 @@
 
     .container {
       position: relative;
-    }*/
+    }
 
     canvas {
       position: absolute;
@@ -38,251 +38,335 @@
 
 'use strict';
 
+
+
+
+  //////////////////////////////////////////////////////////////////////////
+  //                         Gestion des Images                          //
+  /////////////////////////////////////////////////////////////////////////
+
 (function() {
-  var bg, ctxBg, canvas, ctx;
-  var totalSeconds = 0;
+
+
+  // objet litéral servant à stocker toutes les images <img>
+  // pour ne pas avoir à la regénérer à chaque fois qu'on en a besoin
+
+  var images = {
+    background: new Image(),
+    // spaceShip: new Image()
+  };
+
+  // pour charger l'image en mémoire
+  images.background.src = './assets/backgrounds/background_02_parallax_01.png';
+  // images.spaceShip.src = './assets/spaceships/EnemyDefense.png';
+
+
+  //////////////////////////////////////////////////////////////////
+  //                  Objets dessinés sur les canvas              //
+  //////////////////////////////////////////////////////////////////
+
+  // Prototype de l'ensemble des futurs dessins
+  // TO-DO : fonction usine pour minimiser l'espace mémoire ?
+  var Dessin = function() {
+      this.init = function(x, y) {
+        this.x = x;
+        this.y = y;
+      }
+      this.speed = 0;
+      this.canvasWidth = 0;
+      this.canvasHeight = 0;
+  }
+
+  // On prévoit une méthode draw (obligatoire avec canvas)
+  Dessin.prototype.draw = function() {
+  };
+
+  // instance pour mettre en place la chaine de prototype
+  var dessin = new Dessin;
+
+
+  //////////////////////////// Premier enfant : objet background
+  // Fonction constructeur background
+  var Background = function() {
+    this.speed = 1;
+  }
+
+  Background.prototype = dessin;
+
+  Background.prototype.draw = function() {
+    // décale le background en fonction de la vitesse indiquée
+    this.y += this.speed;
+    // la propriété context est définie dans la fonction constructeur Game
+    this.context.drawImage(images.background, this.x, this.y);
+    this.context.drawImage(images.background, this.x, this.y - this.canvasHeigh);
+
+    if (this.y >= this.canvasHeight) {
+      this.y = 0;
+    }
+  };
+
+  // Tous les objets construits avec la fonction constructeur background hériteront de
+  // des proriétés de l'objet dessin
+
+
+  //////////////////////////////////////////////////////////////////////////
+  ///                             Objet JEU                              ///
+  //////////////////////////////////////////////////////////////////////////
+
+  var Game = function() {
+    this.init = function() {
+      this.bg = document.getElementById('background');
+        // vérifier si canvas est bien supporté par le navigateur
+      if (this.bg.getContext) {
+        this.ctxBg = this.bg.getContext('2d');
+        this.bg.width  = window.innerWidth;
+        this.bg.height = window.innerHeight;
+        // on ajoute les propriétés manquantes à Background
+        // utilisées dans la méthode draw
+        Background.prototype.context = this.ctxBg;
+        Background.prototype.canvasWidth = this.bg.width;
+        Background.prototype.canvasHeight = this.bg.height;
+
+        this.background = new Background();
+        this.background.init(0,0);
+        return true;
+      }
+      else {
+        return false;
+      }
+    };
+    // Start the animation loop
+    this.start = function() {
+      gameLoop(0);
+    };
+  }
+
+  var game = new Game();
+
+  var start;
+
+  //////////////////////////////////////////////////////////////////////////
+  ///                         Animation JEU                              ///
+  //////////////////////////////////////////////////////////////////////////
+
+
+  var gameLoop = function(timestamp) {
+    if (!start) { start = timestamp; }
+    // if more than 50 ms since last timestamp
+    if (timestamp - start >= 50) {
+      game.background.draw();
+
+      start = timestamp;
+      // spaceShip.draw();
+      // spaceShip.move();
+      // spaceShip.shoot();
+    }
+    // if (spaceShip.x < 20 || spaceShip.x > bg.width - spaceShip.width - 20) {
+    //   // console.log("collision !");
+    // }
+    window.requestAnimationFrame(gameLoop);
+
+  }
+
+
+  ///////////////////////////////////////////////////////////////////
+  //                      EVENTS HANDLERS
+  ///////////////////////////////////////////////////////////////////
+
+  document.addEventListener('DOMContentLoaded', function() {
+
+    game.init();
+    game.start();
+
+    // canvas = document.getElementById("foreground");
+    // ctx = canvas.getContext('2d');
+    // canvas.width  = window.innerWidth;
+    // canvas.height = window.innerHeight;
+
+  });
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+  // var bg, ctxBg, canvas, ctx;
+  // var totalSeconds = 0;
 
   ///////////////////////////////////////////////////////////////////
   //                      BACKGROUND OBJECT
   ///////////////////////////////////////////////////////////////////
 
 
-  var background = {
-    src: './assets/backgrounds/background_02_parallax_01.png',
-    init: function() {
-            var img = new Image();
-            img.src = this.src;
-            return img;
-    },
-    moveWithTime: function(delay) {
+  // var background = {
+  //   moveWithTime: function(delay) {
 
-            var img = this.init();
-            var that = this;
+  //           var img = images.background;
+  //           var that = this;
 
-            img.addEventListener('load', function() {
-              totalSeconds += delay;
-              // console.log("totalSeconds :" + totalSeconds);
+  //           img.addEventListener('load', function() {
+  //             totalSeconds += delay;
 
-              var vy = 100; // the background scrolls with a speed of 100 pixels/sec
+  //             var vx = 1;
+  //             var vy = 100;
 
-              var numImagesX = Math.ceil(bg.width / img.width) + 1;
-              // console.log("numImagesX :" + numImagesX);
-              // console.log("bg.width :" + bg.width);
-              // console.log("img.width :" + img.width);
+  //             var numImagesX = Math.ceil(bg.width / img.width) + 1;
 
-              var numImagesY = Math.ceil(bg.height / img.height) + 1;
+  //             var numImagesY = Math.ceil(bg.height / img.height) + 1;
 
-              that.xpos =  (spaceShip.x*0.4) % img.width ;
-              // console.log("xpos :" + that.xpos);
+  //             var xpos = totalSeconds * vx % img.width;
+  //             var ypos = (bg.height - totalSeconds * vy) % img.height;
 
-              that.ypos = (bg.height - totalSeconds * vy) % img.height;
+  //             ctxBg.save();
+  //             ctxBg.translate(-xpos, -ypos);
 
-              ctxBg.save();
-              ctxBg.translate(-that.xpos, -that.ypos);
+  //             for (var i = 0; i < numImagesX; i++) {
+  //               for (var j = 0; j < numImagesY; j++) {
+  //                 var x = i * img.width;
+  //                 var y = -j * img.height;
+  //                 // var y = -j * img.height - spaceShip.y*0.4;
 
-              for (var i = 0; i < numImagesX; i++) {
-                for (var j = 0; j < numImagesY; j++) {
-                  var x = i * img.width;
-                  var y = -j * img.height - spaceShip.y*0.4;
-                  ctxBg.drawImage(img, x, y);
-                 }
-               }
-              ctxBg.restore();
-            });
-    },
-    moveWithCollision: function() {
-              // this.alpha = () ? 1.2 : 0.4;
-
-    }
-  }
+  //                 ctxBg.drawImage(img, x, y);
+  //                }
+  //              }
+  //             ctxBg.restore();
+  //           });
+  //   }
+  // }
 
 
   ///////////////////////////////////////////////////////////////////
   //                      SPACE SHIP OBJECT
   ///////////////////////////////////////////////////////////////////
 
-  var i = 1;
-  var j = 0;
+  // var i = 1;
+  // var j = 0;
 
-  // spaceSphip object
-  // It inherits from background object method init()
-  var spaceShip = Object.create(background);
-  spaceShip.src = './assets/spaceships/EnemyDefense.png';
+  // // spaceSphip object
+  // // It inherits from background object method init()
+  // var spaceShip = Object.create(background);
 
-  spaceShip.x = window.innerWidth/2 - 100;
-  spaceShip.y = window.innerHeight*0.9 - 100;
+  // spaceShip.x = window.innerWidth/2 - 100;
+  // spaceShip.y = window.innerHeight*0.9 - 100;
 
-  spaceShip.dx = 10;
-  spaceShip.dy = 10;
+  // spaceShip.dx = 10;
+  // spaceShip.dy = 10;
 
-  spaceShip.v = 1.3;
+  // spaceShip.v = 1.3;
 
-  spaceShip.width = 0;
-  spaceShip.height = 0;
+  // spaceShip.width = 0;
+  // spaceShip.height = 0;
 
-  spaceShip.boundariesX = [0, 2048, 4096];
-  spaceShip.boundariesY = [0, 2048, 4096, 6144];
+  // spaceShip.boundariesX = [0, 2048, 4096];
+  // spaceShip.boundariesY = [0, 2048, 4096, 6144];
 
-  // new draw method (resizing, no destination-over)
-  spaceShip.draw = function() {
-    // restore and save before each new draw : avoid redrawing background each time
-    var img = this.init();
-    var that = this;
+  // // new draw method (resizing, no destination-over)
+  // spaceShip.draw = function() {
+  //   // restore and save before each new draw : avoid redrawing background each time
+  //   var img = images.spaceShip;
+  //   var that = this;
 
-    that.height = window.innerWidth/10;
-    that.width = that.height;
+  //   that.height = window.innerWidth/10;
+  //   that.width = that.height;
 
-    img.addEventListener('load', function() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // ctxBg.globalCompositeOperation = 'source-over';
-      ctx.drawImage(img, spaceShip.boundariesX[i], spaceShip.boundariesY[j], img.width/spaceShip.boundariesX.length, img.height/spaceShip.boundariesY.length, that.x, that.y, that.width, that.height);
-    });
-  };
-
-
-  var rightPressed, leftPressed, upPressed, downPressed, mitraillettePressed, roquettePressed;
+  //   img.addEventListener('load', function() {
+  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //     // ctxBg.globalCompositeOperation = 'source-over';
+  //     ctx.drawImage(img, spaceShip.boundariesX[i], spaceShip.boundariesY[j], img.width/spaceShip.boundariesX.length, img.height/spaceShip.boundariesY.length, that.x, that.y, that.width, that.height);
+  //   });
+  // };
 
 
-  spaceShip.move = function() {
-    if (leftPressed) {
-      this.x -= this.dx;
-      (i > 0) ? i-=1 : i=0;
-    }
-    else if (rightPressed) {
-      this.x += this.dx;
-      (i < 2) ? i+=1 : i=2;
-    }
-    if (upPressed) {
-      this.y -= this.v * this.dy;
-    }
-    else if (downPressed) {
-      this.y += this.dy / this.v;
-    }
-  };
-
-  spaceShip.shoot = function() {
-    if (mitraillettePressed && !roquettePressed) {
-      j = 1;
-    }
-    else if (!mitraillettePressed && roquettePressed) {
-      j = 2;
-    }
-    else if (mitraillettePressed && roquettePressed) {
-      j = 3;
-    }
-    else {
-      j = 0;
-    }
-  }
+  // var rightPressed, leftPressed, upPressed, downPressed, mitraillettePressed, roquettePressed;
 
 
-///////////////////////////////////////////////////////////////////
-//                            GAME LOOP
-///////////////////////////////////////////////////////////////////
+  // spaceShip.move = function() {
+  //   if (leftPressed) {
+  //     this.x -= this.dx;
+  //     (i > 0) ? i-=1 : i=0;
+  //   }
+  //   else if (rightPressed) {
+  //     this.x += this.dx;
+  //     (i < 2) ? i+=1 : i=2;
+  //   }
+  //   if (upPressed) {
+  //     this.y -= this.v * this.dy;
+  //   }
+  //   else if (downPressed) {
+  //     this.y += this.dy / this.v;
+  //   }
+  // };
 
-  var start;
-  var pause;
-
-  var gameLoop = function(timestamp) {
-    if (!start) { start = timestamp; }
-    // if more than 50 ms since last timestamp
-    if (timestamp - start >= 5) {
-      // flowing speed depends on the spaceship speed
-      background.moveWithTime((timestamp - start) / 1000);
-      start = timestamp;
-      spaceShip.draw();
-      spaceShip.move();
-      spaceShip.shoot();
-    }
-    if (spaceShip.x < 20 || spaceShip.x > bg.width - spaceShip.width - 20) {
-      console.log("collision !");
-    }
-    window.requestAnimationFrame(gameLoop);
-
-  }
+  // spaceShip.shoot = function() {
+  //   if (mitraillettePressed && !roquettePressed) {
+  //     j = 1;
+  //   }
+  //   else if (!mitraillettePressed && roquettePressed) {
+  //     j = 2;
+  //   }
+  //   else if (mitraillettePressed && roquettePressed) {
+  //     j = 3;
+  //   }
+  //   else {
+  //     j = 0;
+  //   }
+  // }
 
 
 
-///////////////////////////////////////////////////////////////////
-//                      EVENTS HANDLERS
-///////////////////////////////////////////////////////////////////
 
-  document.addEventListener('DOMContentLoaded', function() {
 
-    bg = document.getElementById("background");
-    ctxBg = bg.getContext('2d');
-    bg.width  = window.innerWidth;
-    bg.height = window.innerHeight;
 
-    canvas = document.getElementById("foreground");
-    ctx = canvas.getContext('2d');
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
+ // document.addEventListener('keydown', function(e) {
+ //    // pause = false;
+ //    if (e.keyCode === 39) {
+ //      rightPressed = true;
+ //    }
+ //    else if(e.keyCode === 37) {
+ //      leftPressed = true;
+ //    }
+ //    if(e.keyCode === 40) {
+ //      downPressed = true;
+ //    }
+ //    else if(e.keyCode === 38) {
+ //      upPressed = true;
+ //    }
+ //    if (e.keyCode === 77) {
+ //      mitraillettePressed = true;
+ //    }
+ //    if (e.keyCode === 82) {
+ //      roquettePressed = true;
+ //    }
+ //    gameLoop(0);
 
-    background.moveWithCollision(bg);
-    gameLoop(0);
+ //  });
 
-  });
+ //  document.addEventListener('keyup', function(e) {
+ //    // pause = true;
+ //    if(e.keyCode === 39) {
+ //      rightPressed = false;
+ //      i = 1;
+ //    }
+ //    else if(e.keyCode === 37) {
+ //      leftPressed = false;
+ //      i = 1;
+ //    }
+ //    if(e.keyCode === 40) {
+ //      downPressed = false;
+ //    }
+ //    else if(e.keyCode === 38) {
+ //      upPressed = false;
+ //    }
+ //    if (e.keyCode === 77) {
+ //      mitraillettePressed = false;
+ //    }
+ //    if (e.keyCode === 82) {
+ //      roquettePressed = false;
+ //    }
+ //    gameLoop(0);
 
- document.addEventListener('keydown', function(e) {
-    // pause = false;
-    if (e.keyCode === 39) {
-      rightPressed = true;
-    }
-    else if(e.keyCode === 37) {
-      leftPressed = true;
-    }
-    if(e.keyCode === 40) {
-      downPressed = true;
-    }
-    else if(e.keyCode === 38) {
-      upPressed = true;
-    }
-    if (e.keyCode === 77) {
-      mitraillettePressed = true;
-    }
-    if (e.keyCode === 82) {
-      roquettePressed = true;
-    }
-    gameLoop(0);
-
-  });
-
-  document.addEventListener('keyup', function(e) {
-    // pause = true;
-    if(e.keyCode === 39) {
-      rightPressed = false;
-      i = 1;
-    }
-    else if(e.keyCode === 37) {
-      leftPressed = false;
-      i = 1;
-    }
-    if(e.keyCode === 40) {
-      downPressed = false;
-    }
-    else if(e.keyCode === 38) {
-      upPressed = false;
-    }
-    if (e.keyCode === 77) {
-      mitraillettePressed = false;
-    }
-    if (e.keyCode === 82) {
-      roquettePressed = false;
-    }
-    gameLoop(0);
-
-  });
+ //  });
 
 }());
 
-  </script>
-  <script src='./js/background.js'></script>
-  <script>
-    document.addEventListener('load', function(){
-      game.init();
-      game.start();
-    });
   </script>
 </head>
 
