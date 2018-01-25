@@ -1,113 +1,63 @@
 
-//////////////////////////////////////////////////////////////////////////
-//                         Gestion des Images                          //
-/////////////////////////////////////////////////////////////////////////
 
-
-// objet litéral servant à stocker toutes les images <img>
-// pour ne pas avoir à la regénérer à chaque fois qu'on en a besoin
-
-var images = {
-  background: new Image()
-};
-
-// pour charger l'image en mémoire
-images.background.src = './assets/backgrounds/background_02_parallax_01.png'
-
-
-// Prototype de tous les futur dessins
-// TO-DO : fonction usine pour minimiser l'espace mémoire
-var Dessin = function() {
-    this.init = function(x, y) {
-      this.x = x;
-      this.y = y;
-    }
-    this.speed = 0;
-    this.canvasWidth = 0;
-    this.canvasHeight = 0;
-}
-
-Dessin.prototype.draw = function() {
-};
-
-var dessin = new Dessin;
-
-
-// Fonction constructeur background
 var Background = function() {
-  this.speed = 1;
-}
-
-Background.prototype.draw = function() {
-  // décale le background en fonction de la vitesse indiquée
-  this.y += this.speed;
-  // la propriété context est définie dans la fonction constructeur Game
-  this.context.drawImage(images.background, this.x, this.y);
-  this.context.drawImage(images.background, this.x, this.y - this.canvasHeigh);
-
-  if (this.y >= this.canvasHeight) {
-    this.y = 0;
+    this.speed = 5;
+    this.totalSeconds = 0;
+    this.shiftCameraX = 0;
+    this.shiftCameraY = 0;
+    this.cumShiftX = image.background.width;
+    this.cumShiftY = image.background.height;
   }
-};
 
-// Hérite des propriétés de la fonction constructeur dessin
-Background.prototype = dessin;
+  Background.prototype.init = function(x,y) {
+    this.x = x;
+    this.y = y;
+  }
+  var c = 0;
 
 
-//////////////////////////////////////////////////////////////////////////
-///                    Fonction Constructeur jeu                       ///
-//////////////////////////////////////////////////////////////////////////
+  var lastPlayer =  {};
 
-var Game = function() {
-  this.init = function() {
-    this.bg = document.getElementById('background');
-      // vérifier si canvas est bien supporté par le navigateur
-    if (this.bg.getContext) {
-      this.ctxBg = this.bg.getContext('2d');
-      this.bg.width  = window.innerWidth;
-      this.bg.height = window.innerHeight;
-      // on ajoute les propriétés manquantes à Background
-      // utilisées dans la méthode draw
-      Background.prototype.context = this.ctxBg;
-      Background.prototype.canvasWidth = this.bg.width;
-      Background.prototype.canvasHeight = this.bg.height;
+  Background.prototype.draw = function(delta) {
 
-      this.background = new Background();
-      this.background.init(0,0); // Set draw point to 0,0
-      return true;
+    this.totalSeconds += 1;
+    var vy = -1; //nombre de pixels par seconde
+
+    if (leftPressed) {
+      this.cumShiftX -= game.player.speed;
     }
-    else {
-      return false;
+    else if (rightPressed) {
+      this.cumShiftX += game.player.speed;
     }
+
+    if (upPressed) {
+      this.cumShiftY -= game.player.speed;
+    }
+    else if (downPressed) {
+      this.cumShiftY += game.player.speed;
+    }
+
+    var numImagesX = Math.ceil(this.canvasWidth/image.background.width) + 1;
+    var numImagesY = Math.ceil(this.canvasHeight/image.background.height) + 1;
+    var xpos = Math.ceil((this.cumShiftX*0.05 + this.shiftCameraX*0.4) % image.background.width) ;
+    var ypos =  Math.ceil((this.totalSeconds * vy + this.cumShiftY*0.05 + this.shiftCameraY*0.4) % image.background.height);
+
+    this.context.save();
+    this.context.translate(-xpos, -ypos);
+    for (var i = -1; i < numImagesX ; i++) {
+      for (var j = -1; j < numImagesY; j++) {
+        this.x = -i * image.background.width  ;
+        this.y = -j * image.background.height ;
+        this.context.drawImage(image.background, this.x, this.y);
+       }
+     }
+    this.context.restore();
+
   };
-  // Start the animation loop
-  this.start = function() {
-    animate();
-  };
-}
 
-
-////////////////////////////////////////////////////////////////////////////
-///                         Animation Loop                               ///
-////////////////////////////////////////////////////////////////////////////
-
-var game = new Game();
-
-var animate = function() {
-  requestAnimFrame( animate );
-  game.background.draw();
-}
-
-window.requestAnimFrame = (function(){
-  return  window.requestAnimationFrame   ||
-      window.webkitRequestAnimationFrame ||
-      window.mozRequestAnimationFrame    ||
-      window.oRequestAnimationFrame      ||
-      window.msRequestAnimationFrame     ||
-      function(callback, element){
-        window.setTimeout(callback, 1000 / 60);
-      };
-})();
-
-
-
+  // pour gérer les collisions avec le bord d'écran
+  Background.prototype.move = function(x,y) {
+    this.context.translate(x, y);
+    this.shiftCameraX -= x;
+    this.shiftCameraY -= y;
+  }
