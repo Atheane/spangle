@@ -2,6 +2,7 @@
 require(['helper/image', 'helper/player'],
   function(image, Player) {
 
+
   'use strict';
 
   ///////////////////////////////////////////////////////////////
@@ -27,17 +28,17 @@ require(['helper/image', 'helper/player'],
     this.totalSeconds += 1;
     var vy = -1; //nombre de pixels par seconde
 
-    if (leftPressed) {
+    if (game.player.leftPressed) {
       this.cumShiftX -= game.player.speed;
     }
-    else if (rightPressed) {
+    else if (game.player.rightPressed) {
       this.cumShiftX += game.player.speed;
     }
 
-    if (upPressed) {
+    if (game.player.upPressed) {
       this.cumShiftY -= game.player.speed;
     }
-    else if (downPressed) {
+    else if (game.player.downPressed) {
       this.cumShiftY += game.player.speed;
     }
 
@@ -65,9 +66,6 @@ require(['helper/image', 'helper/player'],
     this.shiftCameraX -= x;
     this.shiftCameraY -= y;
   }
-
-  return Background;
-
 
 
   /////////////////////////////////////////////////////////
@@ -168,7 +166,6 @@ var start;
   };
 
 
-
 ///////////////////////////////////////////////////////////
 //                   EVENT HANDLERS                      //
 ///////////////////////////////////////////////////////////
@@ -185,46 +182,46 @@ var start;
 
  document.addEventListener('keydown', function(e) {
     if (e.keyCode === 39) {
-      rightPressed = true;
+      game.player.rightPressed = true;
     }
     else if(e.keyCode === 37) {
-      leftPressed = true;
+      game.player.leftPressed = true;
     }
     if(e.keyCode === 40) {
-      downPressed = true;
+      game.player.downPressed = true;
     }
     else if(e.keyCode === 38) {
-      upPressed = true;
+      game.player.upPressed = true;
     }
     if (e.keyCode === 77) {
-      mitraillettePressed = true;
+      game.player.mitraillettePressed = true;
     }
     if (e.keyCode === 82) {
-      roquettePressed = true;
+      game.player.roquettePressed = true;
     }
 
   });
 
   document.addEventListener('keyup', function(e) {
     if(e.keyCode === 39) {
-      rightPressed = false;
+      game.player.rightPressed = false;
       game.player.i = 1;
     }
     else if(e.keyCode === 37) {
-      leftPressed = false;
+      game.player.leftPressed = false;
       game.player.i = 1;
     }
     if(e.keyCode === 40) {
-      downPressed = false;
+      game.player.downPressed = false;
     }
     else if(e.keyCode === 38) {
-      upPressed = false;
+      game.player.upPressed = false;
     }
     if (e.keyCode === 77) {
-      mitraillettePressed = false;
+      game.player.mitraillettePressed = false;
     }
     if (e.keyCode === 82) {
-      roquettePressed = false;
+      game.player.roquettePressed = false;
     }
 
   });
