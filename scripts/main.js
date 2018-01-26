@@ -1,6 +1,6 @@
 
-require(['helper/game'],
-  function(game) {
+require(['helper/game', 'helper/key', 'jquery'],
+  function(game, key, $) {
 
 
   'use strict';
@@ -20,48 +20,48 @@ require(['helper/game'],
   });
 
 
- document.addEventListener('keydown', function(e) {
+ $(document).keydown(function(e) {
     if (e.keyCode === 39) {
-      game.player.rightPressed = true;
+      key.rightPressed = true;
     }
     else if(e.keyCode === 37) {
-      game.player.leftPressed = true;
+      key.leftPressed = true;
     }
     if(e.keyCode === 40) {
-      game.player.downPressed = true;
+      key.downPressed = true;
     }
     else if(e.keyCode === 38) {
-      game.player.upPressed = true;
+      key.upPressed = true;
     }
     if (e.keyCode === 77) {
-      game.player.mitraillettePressed = true;
+      key.mitraillettePressed = true;
     }
     if (e.keyCode === 82) {
-      game.player.roquettePressed = true;
+      key.roquettePressed = true;
     }
 
   });
 
-  document.addEventListener('keyup', function(e) {
+  $(document).keyup(function(e) {
     if(e.keyCode === 39) {
-      game.player.rightPressed = false;
+      key.rightPressed = false;
       game.player.i = 1;
     }
     else if(e.keyCode === 37) {
-      game.player.leftPressed = false;
+      key.leftPressed = false;
       game.player.i = 1;
     }
     if(e.keyCode === 40) {
-      game.player.downPressed = false;
+      key.downPressed = false;
     }
     else if(e.keyCode === 38) {
-      game.player.upPressed = false;
+      key.upPressed = false;
     }
     if (e.keyCode === 77) {
-      game.player.mitraillettePressed = false;
+      key.mitraillettePressed = false;
     }
     if (e.keyCode === 82) {
-      game.player.roquettePressed = false;
+      key.roquettePressed = false;
     }
 
   });

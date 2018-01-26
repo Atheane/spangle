@@ -31,7 +31,7 @@ define(['require','./background', './player'], function(require, Background, Pla
         Player.prototype.canvasHeight = this.playerCanvas.height;
 
         this.background = new Background();
-        this.background.init(0,0);
+        this.background.init(0,0,0,0);
 
         this.player = new Player();
 
