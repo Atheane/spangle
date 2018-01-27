@@ -55,7 +55,7 @@ define(['./image', './dessin'], function(image, Dessin) {
   };
 
   // pour gérer les collisions avec le bord d'écran
-  Background.prototype.move = function(x,y) {
+  Background.prototype.move = function(x, y) {
     this.context.translate(x, y);
     this.shiftCameraX -= x;
     this.shiftCameraY -= y;
