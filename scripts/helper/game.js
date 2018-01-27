@@ -77,9 +77,9 @@ define(['require','./background', './player'], function(require, Background, Pla
       game.background.move(-game.player.speed*0.5,0);
       game.player.x = game.background.canvasWidth - game.player.width - 20;
     }
-    else if (game.player.y < 20) {
+    else if (game.player.y < game.playerCanvas.height*0.5) {
       game.background.move(0,game.player.speed*0.5);
-      game.player.y = 20;
+      game.player.y = game.playerCanvas.height*0.5;
     }
     else if (game.player.y > game.background.canvasHeight - game.player.height - 20) {
       game.background.move(0,-game.player.speed*0.5);
