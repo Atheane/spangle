@@ -15,25 +15,25 @@ define(['./image', './dessin'], function(image, Dessin) {
 
   Background.prototype = dessin;
 
-  Background.prototype.draw = function(game) {
+  Background.prototype.draw = function(player) {
 
     this.width = image.background.width;
     this.height = image.background.height;
 
     this.totalSeconds += 1;
 
-    if (game.player.leftPressed) {
-      this.cumShiftX -= game.player.speed;
+    if (player.leftPressed) {
+      this.cumShiftX -= player.speed;
     }
-    else if (game.player.rightPressed) {
-      this.cumShiftX += game.player.speed;
+    else if (player.rightPressed) {
+      this.cumShiftX += player.speed;
     }
 
-    if (game.player.upPressed) {
-      this.cumShiftY -= game.player.speed;
+    if (player.upPressed) {
+      this.cumShiftY -= player.speed;
     }
-    else if (game.player.downPressed) {
-      this.cumShiftY += game.player.speed;
+    else if (player.downPressed) {
+      this.cumShiftY += player.speed;
     }
 
     var numImagesX = Math.ceil(this.canvasWidth/this.width) + 1;
@@ -57,6 +57,7 @@ define(['./image', './dessin'], function(image, Dessin) {
   // pour gérer les collisions avec le bord d'écran
   Background.prototype.move = function(x, y) {
     this.context.translate(x, y);
+    console.log(this.context);
     this.shiftCameraX -= x;
     this.shiftCameraY -= y;
   }

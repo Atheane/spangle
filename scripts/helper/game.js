@@ -79,8 +79,6 @@ define(['require','./background', './player', './bullet'], function(require, Bac
           bullet.draw();
         }
       });
-      console.log(game.player.packBullets.length);
-
 
     }
     if (timestamp - start2 >= 15) {

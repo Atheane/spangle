@@ -80,14 +80,12 @@ define(['./image','./dessin', './key', './bullet'], function(image, Dessin, key,
         this.packBullets.unshift(bullet);
       }
       else {
-        console.log("last is inactive");
         lastBullet = this.packBullets.pop();
         lastBullet.init(this.x+46, this.y+4, 5, 10);
         lastBullet.active = true;
         this.packBullets.splice(0, 0, lastBullet);
       }
     }
-    console.log(this.packBullets);
   }
 
 
