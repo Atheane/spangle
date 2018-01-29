@@ -1,4 +1,3 @@
-
 define(['./image', './dessin'], function(image, Dessin) {
 
   'use strict';
