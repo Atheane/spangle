@@ -36,6 +36,18 @@ define(['./image', './dessin'], function(image, Dessin) {
       this.cumShiftY += player.speed;
     }
 
+
+    // Pan background
+    // this.y += this.speed;
+    // this.context.drawImage(image.background, this.x, this.y);
+    // // Draw another image at the top edge of the first image
+    // this.context.drawImage(image.background, this.x, this.y - this.canvasHeight);
+    // // If the image scrolled off the screen, reset
+    // if (this.y >= this.canvasHeight) {
+    //   this.y = 0;
+    // }
+
+
     var numImagesX = Math.ceil(this.canvasWidth/this.width) + 1;
     var numImagesY = Math.ceil(this.canvasHeight/this.height) + 1;
     var xpos = Math.ceil((this.cumShiftX*0.05 + this.shiftCameraX*0.4) % this.width) ;

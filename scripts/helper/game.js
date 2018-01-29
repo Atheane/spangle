@@ -1,4 +1,4 @@
-define(['require','./background', './player', './bullet'], function(require, Background, Player, Bullet) {
+define(['require','./background', './player', './bullet', './asteroid'], function(require, Background, Player, Bullet, Asteroid) {
 
   'use strict';
 
@@ -39,15 +39,22 @@ define(['require','./background', './player', './bullet'], function(require, Bac
         Player.prototype.canvasWidth = this.playerCanvas.width;
         Player.prototype.canvasHeight = this.playerCanvas.height;
 
+        Asteroid.prototype.context = this.mainContext;
+        Asteroid.prototype.canvasWidth = this.mainCanvas.width;
+        Asteroid.prototype.canvasHeight = this.mainCanvas.height;
+
         this.background = new Background();
         this.background.init(0,0,0,0);
 
-        this.player = new Player();
+        this.player = new Player;
         var playerX = this.playerCanvas.width/2-150;
         var playerY = Math.ceil(this.playerCanvas.height*0.8);
         this.player.init(playerX, playerY, 150, 150);
 
-        this.bullet = new Bullet();
+        this.bullet = new Bullet;
+
+        this.asteroid = new Asteroid;
+        this.asteroid.init(150, 0, 100, 100);
 
         return true;
       }
@@ -84,6 +91,7 @@ define(['require','./background', './player', './bullet'], function(require, Bac
     if (timestamp - start2 >= 15) {
       game.player.draw();
       game.player.move(game.background);
+      game.asteroid.draw();
       start2 = timestamp;
     }
 
