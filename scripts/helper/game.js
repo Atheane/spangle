@@ -16,6 +16,9 @@ define(['require','./background', './player', './bullet', './asteroid'], functio
         this.bgContext.globalCompositeOperation = 'destination-over';
 
         this.mainContext = this.mainCanvas.getContext('2d');
+        this.mainContext.globalCompositeOperation = 'source-over';
+
+
         this.playerContext = this.playerCanvas.getContext('2d');
 
 
@@ -57,14 +60,28 @@ define(['require','./background', './player', './bullet', './asteroid'], functio
 
         this.bullet = new Bullet;
 
-        this.generateField = function() {
-          var pool = [0,0,0,0,0,0,0,0,0,0,0,0];
-          for (var i = 0; i < 5; i++) {
-            var rank = getRandomInt(0,12);
-            pool[rank] = 1;
+        var pool = [0,0,0,0,0,0,0,0,0,0,0,0];
+        for (var i = 0; i < 5; i++) {
+          var rank = getRandomInt(0,12);
+          pool[rank] = 1;
+        };
+
+        this.field = [];
+        for (var i = 0; i < pool.length; i++) {
+          if (pool[i]) {
+            var size = 150;
+            var asteroid = new Asteroid;
+            asteroid.init(Math.ceil(game.mainCanvas.width*i/12), -size, size, size);
+            this.field.push(asteroid);
           }
-          return pool;
-        }
+        };
+
+        console.log(this.field);
+
+        // var size = 150;
+        // // console.log(game.mainCanvas.width*i/12);
+        // asteroid.init(Math.ceil(game.mainCanvas.width*i/12), -size, size, size);
+        // console.log(asteroid);
 
         // this.field = new Field;
         // this.field.init(0,0,this.mainCanvas.width, this.mainCanvas.height);
@@ -105,17 +122,13 @@ define(['require','./background', './player', './bullet', './asteroid'], functio
     if (timestamp - start2 >= 15) {
       game.player.draw();
       game.player.move(game.background);
-      var field = game.generateField();
-      for (var i = 0; i < field.length; i++) {
-        if (field[i]) {
-          var asteroid = new Asteroid;
-          var size = 150;
-          // console.log(game.mainCanvas.width*i/12);
-          asteroid.init(Math.ceil(game.mainCanvas.width*i/12), -size, size, size);
-          // console.log(asteroid);
+
+      game.field.forEach(function(asteroid) {
+        if (asteroid.active) {
           asteroid.draw();
         }
-      };
+      });
+
       start2 = timestamp;
     }
 

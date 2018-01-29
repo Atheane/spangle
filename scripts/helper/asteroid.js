@@ -17,8 +17,7 @@ define(['./image', './dessin'], function(image, Dessin) {
 
     this.context.clearRect(this.x, this.y, this.width, this.height);
     this.y += this.speed;
-    if (this.y < 0 - this.height) {
-      // console.log(called);
+    if (this.y < this.canvasHeight) {
       this.context.drawImage(image.asteroid, 0, 0, image.asteroid.width/3, image.asteroid.height/2, this.x, this.y, this.width, this.height);
     }
     else {
