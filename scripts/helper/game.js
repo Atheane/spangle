@@ -46,10 +46,6 @@ define(['require','./background', './player', './bullet', './asteroid'], functio
         Asteroid.prototype.canvasWidth = this.mainCanvas.width;
         Asteroid.prototype.canvasHeight = this.mainCanvas.height;
 
-        // Field.prototype.context = this.mainContext;
-        // Field.prototype.canvasWidth = this.mainCanvas.width;
-        // Field.prototype.canvasHeight = this.mainCanvas.height;
-
         this.background = new Background();
         this.background.init(0,0,0,0);
 
@@ -57,35 +53,6 @@ define(['require','./background', './player', './bullet', './asteroid'], functio
         var playerX = this.playerCanvas.width/2-150;
         var playerY = Math.ceil(this.playerCanvas.height*0.8);
         this.player.init(playerX, playerY, 150, 150);
-
-        this.bullet = new Bullet;
-
-        var pool = [0,0,0,0,0,0,0,0,0,0,0,0];
-        for (var i = 0; i < 5; i++) {
-          var rank = getRandomInt(0,12);
-          pool[rank] = 1;
-        };
-
-        this.field = [];
-        for (var i = 0; i < pool.length; i++) {
-          if (pool[i]) {
-            var size = 150;
-            var asteroid = new Asteroid;
-            asteroid.init(Math.ceil(game.mainCanvas.width*i/12), -size, size, size);
-            this.field.push(asteroid);
-          }
-        };
-
-        console.log(this.field);
-
-        // var size = 150;
-        // // console.log(game.mainCanvas.width*i/12);
-        // asteroid.init(Math.ceil(game.mainCanvas.width*i/12), -size, size, size);
-        // console.log(asteroid);
-
-        // this.field = new Field;
-        // this.field.init(0,0,this.mainCanvas.width, this.mainCanvas.height);
-        // console.log(this.field.pool);
 
         return true;
       }
@@ -110,24 +77,24 @@ define(['require','./background', './player', './bullet', './asteroid'], functio
     // if more than 50 ms since last timestamp
     if (timestamp - start1 >= 50) {
       game.background.draw(game);
-      start1 = timestamp;
+      game.background.packAsteroids.forEach(function(asteroid) {
+        if (asteroid.active) {
+          asteroid.draw();
+        }
+      });
+
       game.player.shoot();
       game.player.packBullets.forEach(function(bullet) {
         if (bullet.active) {
           bullet.draw();
         }
       });
+      start1 = timestamp;
 
     }
     if (timestamp - start2 >= 15) {
       game.player.draw();
       game.player.move(game.background);
-
-      game.field.forEach(function(asteroid) {
-        if (asteroid.active) {
-          asteroid.draw();
-        }
-      });
 
       start2 = timestamp;
     }
