@@ -68,36 +68,40 @@ define(['require','./background', './player', './bullet', './asteroid'], functio
 
   var game = new Game();
 
-  var start1, start2, start3;
+  var start1, start2;
+  var cum = 0;
   var gameLoop = function(timestamp) {
     if (!start1) { start1 = timestamp; }
     if (!start2) { start2 = timestamp; }
-    if (!start3) { start3 = timestamp; }
 
     // if more than 50 ms since last timestamp
     if (timestamp - start1 >= 50) {
       game.background.draw(game);
-      game.background.packAsteroids.forEach(function(asteroid) {
-        if (asteroid.active) {
-          asteroid.draw();
-        }
-      });
-
       game.player.shoot();
       game.player.packBullets.forEach(function(bullet) {
         if (bullet.active) {
           bullet.draw();
         }
       });
-      start1 = timestamp;
+      // cum += Math.ceil(start1);
+      // if (cum % 2 === 0) {
+        game.background.packAsteroids.forEach(function(asteroid) {
+          if (asteroid.active) {
+            asteroid.draw();
+          }
+        });
 
+      // }
+      start1 = timestamp;
     }
+
     if (timestamp - start2 >= 15) {
       game.player.draw();
       game.player.move(game.background);
 
       start2 = timestamp;
     }
+
 
 
     // if (game.player.x < 20) {

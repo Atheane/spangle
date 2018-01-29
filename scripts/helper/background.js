@@ -38,7 +38,6 @@ define(['./image', './dessin', './asteroid'], function(image, Dessin, Asteroid) 
       this.cumShiftY += player.speed;
     }
 
-
     // Pan background
     // this.y += this.speed;
     // this.context.drawImage(image.background, this.x, this.y);
@@ -50,7 +49,6 @@ define(['./image', './dessin', './asteroid'], function(image, Dessin, Asteroid) 
     // }
 
     this.pooling();
-    console.log("this.pooling")
 
     var numImagesX = Math.ceil(this.canvasWidth/this.width) + 1;
     var numImagesY = Math.ceil(this.canvasHeight/this.height) + 1;
@@ -79,11 +77,11 @@ define(['./image', './dessin', './asteroid'], function(image, Dessin, Asteroid) 
   }
 
   Background.prototype.pooling = function() {
-    if (this.packAsteroids.length < this.maxSize) {
+    if (this.packAsteroids.length < this.maxSize*150) {
       // if (true) {
       var asteroid = new Asteroid;
       var size = 150;
-      asteroid.init(Math.ceil(getRandomInt(this.canvasWidth/4, this.canvasWidth/2)), 0, size, size);
+      asteroid.init(Math.ceil(getRandomInt(this.canvasWidth/12, this.canvasWidth)), -10, 10, 10);
       this.packAsteroids.push(asteroid);
     }
     // else {
