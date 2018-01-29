@@ -1,4 +1,4 @@
-define(['require','./background', './player', './bullet', './asteroid', './field'], function(require, Background, Player, Bullet, Asteroid, Field) {
+define(['require','./background', './player', './bullet', './asteroid'], function(require, Background, Player, Bullet, Asteroid) {
 
   'use strict';
 
@@ -43,9 +43,9 @@ define(['require','./background', './player', './bullet', './asteroid', './field
         Asteroid.prototype.canvasWidth = this.mainCanvas.width;
         Asteroid.prototype.canvasHeight = this.mainCanvas.height;
 
-        Field.prototype.context = this.mainContext;
-        Field.prototype.canvasWidth = this.mainCanvas.width;
-        Field.prototype.canvasHeight = this.mainCanvas.height;
+        // Field.prototype.context = this.mainContext;
+        // Field.prototype.canvasWidth = this.mainCanvas.width;
+        // Field.prototype.canvasHeight = this.mainCanvas.height;
 
         this.background = new Background();
         this.background.init(0,0,0,0);
@@ -57,12 +57,18 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 
         this.bullet = new Bullet;
 
-        // this.asteroid = new Asteroid;
-        // this.asteroid.init(150, 0, 100, 100);
+        this.generateField = function() {
+          var pool = [0,0,0,0,0,0,0,0,0,0,0,0];
+          for (var i = 0; i < 5; i++) {
+            var rank = getRandomInt(0,12);
+            pool[rank] = 1;
+          }
+          return pool;
+        }
 
-        this.field = new Field;
-        this.field.init(0,0,this.mainCanvas.width, this.mainCanvas.height);
-        console.log(this.field.pool);
+        // this.field = new Field;
+        // this.field.init(0,0,this.mainCanvas.width, this.mainCanvas.height);
+        // console.log(this.field.pool);
 
         return true;
       }
@@ -99,8 +105,17 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     if (timestamp - start2 >= 15) {
       game.player.draw();
       game.player.move(game.background);
-      game.field.generatePool();
-      game.field.draw();
+      var field = game.generateField();
+      for (var i = 0; i < field.length; i++) {
+        if (field[i]) {
+          var asteroid = new Asteroid;
+          var size = 150;
+          // console.log(game.mainCanvas.width*i/12);
+          asteroid.init(Math.ceil(game.mainCanvas.width*i/12), -size, size, size);
+          // console.log(asteroid);
+          asteroid.draw();
+        }
+      };
       start2 = timestamp;
     }
 
@@ -128,3 +143,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
   return game;
 
 });
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}

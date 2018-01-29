@@ -14,9 +14,10 @@ define(['./image', './dessin'], function(image, Dessin) {
 
   Asteroid.prototype.draw = function() {
 
-    // this.context.clearRect(this.x, this.y, this.width, this.height);
+    this.context.clearRect(this.x, this.y, this.width, this.height);
     this.y += this.speed;
-    if (this.y > 0 - this.height) {
+    if (this.y < 0 - this.height) {
+      // console.log(called);
       this.context.drawImage(image.asteroid, 0, 0, image.asteroid.width/3, image.asteroid.height/2, this.x, this.y, this.width, this.height);
     }
     else {
