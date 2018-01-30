@@ -37,16 +37,14 @@ define([], function() {
     return collision;
   };
 
-  Collision.prototype.asteroidPlayer = function(asteroid, player) {
+  Collision.prototype.asteroid = function(asteroid, obj) {
     var collision = false;
-    if (asteroid.x < player.x + player.width  && asteroid.x + asteroid.width > player.x &&
-        asteroid.y < player.y + player.height && asteroid.height + asteroid.y > player.y) {
+    if (asteroid.x < obj.x + obj.width  && asteroid.x + asteroid.width > obj.x &&
+        asteroid.y < obj.y + obj.height && asteroid.height + asteroid.y > obj.y) {
             collision = true;
         }
     return collision;
   }
-
-
 
   return Collision;
 

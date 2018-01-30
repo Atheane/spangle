@@ -28,18 +28,12 @@ define(['./image','./dessin', './key', './bullet'], function(image, Dessin, key,
    };
 
    Player.prototype.explode = function() {
-    // console.log("explode")
-    // this.context.drawImage(image.explosionBig,0, 0, image.player.width, image.player.height);
 
-    // for (var index = 0; index < 9; index++) {
-    //   this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-    //   this.context.drawImage(image.explosionBig, Math.ceil(image.explosionBig.width*index/9), 0, image.explosionBig.width/9, image.explosionBig.height, this.x, this.y, this.width, this.height);
-    // }
       var boundariesExplosion = [0, 208, 417, 625, 833, 1041, 1264, 1473, 1681];
 
       this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
       this.context.drawImage(image.explosionBig, boundariesExplosion[this.explodeI], 0, image.explosionBig.width/9, image.explosionBig.height, this.x, this.y, this.width, this.height);
-      (this.explodeI < 9) ? this.explodeI+=1 : this.explodeI=9;
+      (this.explodeI < 9) ? this.explodeI+=1 : this.explodeI=0;
    }
 
   Player.prototype.move = function() {
@@ -57,8 +51,6 @@ define(['./image','./dessin', './key', './bullet'], function(image, Dessin, key,
     else if (key.downPressed) {
       this.y += this.speed ;
     }
-
-    // this.collideBackground();
 
   };
 
