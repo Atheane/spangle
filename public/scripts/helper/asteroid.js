@@ -28,6 +28,8 @@ define(['./image', './dessin'], function(image, Dessin) {
     }
     else {
       this.active = false;
+      this.explodeI = 0;
+      this.explodeJ = 0;
     }
   };
 
