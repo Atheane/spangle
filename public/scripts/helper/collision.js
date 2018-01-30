@@ -27,10 +27,8 @@ define([], function() {
     if (arrayAsteroids.length) {
       arrayAsteroids.forEach(function(a,i) {
         if (a !== currentAsteroid) {
-          if (a.x < currentAsteroid.x + currentAsteroid.width &&
-          a.x + a.width > currentAsteroid.x &&
-          a.y < currentAsteroid.y + currentAsteroid.height &&
-          a.height + a.y > currentAsteroid.y) {
+          if (a.x < currentAsteroid.x + currentAsteroid.width && a.x + a.width > currentAsteroid.x &&
+          a.y < currentAsteroid.y + currentAsteroid.height && a.height + a.y > currentAsteroid.y) {
             collision = true;
           }
         }
@@ -39,25 +37,16 @@ define([], function() {
     return collision;
   };
 
+  Collision.prototype.asteroid = function(asteroid, obj) {
+    var collision = false;
+    if (asteroid.x < obj.x + obj.width  && asteroid.x + asteroid.width > obj.x &&
+        asteroid.y < obj.y + obj.height && asteroid.height + asteroid.y > obj.y) {
+            collision = true;
+        }
+    return collision;
+  }
 
   return Collision;
 
 });
 
-
-// if (game.player.x < 20) {
-//   game.background.move(game.player.speed*0.5,0);
-//   game.player.x = 20;
-// }
-// else if (game.player.x > Math.ceil(game.player.canvasWidth - game.player.width - 20)) {
-//   game.background.move(-game.player.speed*0.5,0);
-//   game.player.x = Math.ceil(game.player.canvasWidth - game.player.width - 20);
-// }
-// else if (game.player.y < Math.ceil(game.player.canvasHeight*0.3)) {
-//   game.background.move(0, game.player.speed*0.5);
-//   game.player.y = Math.ceil(game.player.canvasHeight*0.3);
-// }
-// else if (game.player.y > Math.ceil(game.player.canvasHeight*0.9)) {
-//   game.background.move(0,-game.player.speed*0.5);
-//   game.player.y = Math.ceil(game.player.canvasHeight*0.9);
-// }

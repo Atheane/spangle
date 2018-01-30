@@ -6,6 +6,10 @@ define(['./image', './dessin'], function(image, Dessin) {
   var Asteroid = function() {
     this.speed = 5;
     this.active = true;
+    this.explodeI = 0;
+    this.explodeJ = 0;
+    this.explodeK = 0;
+
   }
 
   var dessin = new Dessin;
@@ -17,12 +21,41 @@ define(['./image', './dessin'], function(image, Dessin) {
 
     this.context.clearRect(this.x, this.y, this.width, this.height);
     this.y += this.speed;
-    if (this.y < this.canvasHeight) {
-      this.context.drawImage(image.asteroid, 0, 0, image.asteroid.width/3, image.asteroid.height/2, this.x, this.y, this.width, this.height);
+
+    var boundariesX = [0, 600, 1200];
+    var boundariesY = [0, 500];
+    var boundariesExplosion = [0, 208, 417, 625, 833, 1041, 1264, 1473, 1681];
+
+    if (this.y < this.canvasHeight && (this.explodeI !== 2 || this.explodeJ !== 1)) {
+      this.context.drawImage(image.asteroid, boundariesX[this.explodeI], boundariesY[this.explodeJ], Math.ceil(image.asteroid.width/3), Math.ceil(image.asteroid.height/2), this.x, this.y, this.width, this.height);
+    }
+    else if (this.y < this.canvasHeight && this.explodeI === 2 && this.explodeJ === 1 && this.explodeK < 9) {
+      this.context.drawImage(image.explosion, boundariesExplosion[this.explodeK], 0, image.explosion.width/9, image.explosion.height, this.x, this.y, this.width, this.height);
+      this.explodeK += 1;
     }
     else {
       this.active = false;
+      this.explodeI = 0;
+      this.explodeJ = 0;
+      this.explodeK = 0;
+     }
+
+  };
+
+  Asteroid.prototype.explode = function() {
+
+    if (this.explodeI < 2 && this.explodeJ === 0) {
+      this.explodeI +=1;
+      this.explodeJ = 0;
     }
+    else if (this.explodeI === 2 && this.explodeJ === 0) {
+      this.explodeI = 0;
+      this.explodeJ = 1;
+    }
+    else if (this.explodeI < 2 && this.explodeJ === 1) {
+      this.explodeI += 1;
+    }
+
   };
 
   return Asteroid;

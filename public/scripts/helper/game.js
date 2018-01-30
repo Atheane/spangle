@@ -96,12 +96,25 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     if (timestamp - start2 >= 15) {
       game.player.draw();
       game.player.move();
+      game.field.pooling();
+      game.field.draw();
+      game.field.packAsteroids.forEach(function(asteroid) {
+        var collisionPlayer = game.collision.asteroid(game.player, asteroid);
+        if (collisionPlayer) {
+          game.player.explode();
+        }
+        game.player.packBullets.forEach(function(bullet) {
+          var collisionBullet = game.collision.asteroid(bullet, asteroid);
+          if (bullet.active && collisionBullet) {
+            asteroid.explode();
+            bullet.active = false;
+          }
+        });
+      });
       start2 = timestamp;
     }
 
-    if (timestamp - start3 >= 15) {
-      game.field.pooling();
-      game.field.draw();
+    if (timestamp - start3 >= 30) {
       start3 = timestamp;
     }
 

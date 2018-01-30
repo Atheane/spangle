@@ -13,19 +13,10 @@ define(['./image', './dessin', './asteroid', './collision'], function(image, Des
 
   Field.prototype.draw = function() {
 
-    // we copy former version of the this.pachAsteroids by value
-    // var temp = Object.assign({}, this);
-    // var oldSample = temp.packAsteroids;
-    // we choose new coordinates for an upcoming asteroids
-
     var collision = new Collision;
 
-    // console.log(collision.Field(oldSample, this));
-    // var that = this;
-
     this.packAsteroids.forEach(function(asteroid, index, array) {
-      // console.log(asteroid, array);
-      if (!collision.Field(array, asteroid)) {
+      if (!collision.Field(array, asteroid) && asteroid.active) {
         asteroid.draw();
       }
       else {
