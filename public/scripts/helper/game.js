@@ -95,13 +95,20 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 
     if (timestamp - start2 >= 15) {
       game.player.draw();
+      game.field.packAsteroids.forEach(function(asteroid) {
+        var collision = game.collision.asteroidPlayer(game.player, asteroid);
+        if (collision) {
+          console.log("collision")
+          game.player.explode();
+        }
+      });
       game.player.move();
+      game.field.pooling();
+      game.field.draw();
       start2 = timestamp;
     }
 
-    if (timestamp - start3 >= 15) {
-      game.field.pooling();
-      game.field.draw();
+    if (timestamp - start3 >= 30) {
       start3 = timestamp;
     }
 

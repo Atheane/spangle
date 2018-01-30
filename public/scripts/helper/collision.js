@@ -27,10 +27,8 @@ define([], function() {
     if (arrayAsteroids.length) {
       arrayAsteroids.forEach(function(a,i) {
         if (a !== currentAsteroid) {
-          if (a.x < currentAsteroid.x + currentAsteroid.width &&
-          a.x + a.width > currentAsteroid.x &&
-          a.y < currentAsteroid.y + currentAsteroid.height &&
-          a.height + a.y > currentAsteroid.y) {
+          if (a.x < currentAsteroid.x + currentAsteroid.width && a.x + a.width > currentAsteroid.x &&
+          a.y < currentAsteroid.y + currentAsteroid.height && a.height + a.y > currentAsteroid.y) {
             collision = true;
           }
         }
@@ -38,6 +36,16 @@ define([], function() {
     }
     return collision;
   };
+
+  Collision.prototype.asteroidPlayer = function(asteroid, player) {
+    var collision = false;
+    if (asteroid.x < player.x + player.width  && asteroid.x + asteroid.width > player.x &&
+        asteroid.y < player.y + player.height && asteroid.height + asteroid.y > player.y) {
+            collision = true;
+        }
+    return collision;
+  }
+
 
 
   return Collision;

@@ -8,6 +8,7 @@ define(['../jquery'], function ($) {
   image.bulletShort = new Image;
   // image.bulletLong = new Image;
   image.asteroid = new Image;
+  image.explosionBig = new Image;
 
 
   var imageLoading = function() {
@@ -26,13 +27,16 @@ define(['../jquery'], function ($) {
     $(image.asteroid).on('load', function() {
       console.log('Asteroid Image Loaded');
     });
+    $(image.explosionBig).on('load', function() {
+      console.log('Explosion Big Loaded');
+    });
 
     image.background.src = '../../img/paralax_simple.png';
     image.player.src = '../../img/EnemyDefense.png';
     image.bulletShort.src = '../../img/bullet_blaster_small_single.png';
     // image.bulletLong.src = '../../assets/weapons/bullet_long_single.png';
     image.asteroid.src = '../../img/asteroid_01_with_cracks.png';
-
+    image.explosionBig.src = '../../img/explosion_big.png';
   };
 
   imageLoading();
