@@ -5,11 +5,6 @@ require(['helper/game', 'helper/key', 'jquery'],
 
   'use strict';
 
-
-///////////////////////////////////////////////////////////
-//                   EVENT HANDLERS                      //
-///////////////////////////////////////////////////////////
-
   require(['./domReady'], function (domReady) {
     domReady(function () {
       if (game.init()) {
