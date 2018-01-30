@@ -4,9 +4,13 @@ var path = require('path');
 
 
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'))
-})
+// app.get('/', function(req, res) {
+//     res.sendFile(path.join(__dirname + '/index.html'))
+// })
+
+app.get("/", (req, res) => {
+   res.send({ hello: "world" });
+});
 
 // app.get('/rgb', function(req, res) {
 //     res.sendFile(path.join(__dirname + '/projects/rgbGame.html'))
@@ -16,7 +20,8 @@ app.get('/', function(req, res) {
 //     res.sendFile(path.join(__dirname + '/projects/resuGame.html'))
 // })
 
+// app.use(express.static('assets'))
 
-app.use(express.static('public'))
+var PORT = process.env.PORT;
 
-app.listen(8080);
+app.listen(PORT);
