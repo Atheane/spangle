@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Atheane/spangle/issues"
   },
-  "homepage": "https://github.com/Atheane/spangle#readme"
+  "homepage": "https://github.com/Atheane/spangle#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
 }
