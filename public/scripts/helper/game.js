@@ -1,4 +1,4 @@
-define(['require','./background', './player', './bullet', './asteroid', './field'], function(require, Background, Player, Bullet, Asteroid, Field) {
+define(['require','./background', './player', './bullet', './asteroid', './field', './collision'], function(require, Background, Player, Bullet, Asteroid, Field, Collision) {
 
   'use strict';
 
@@ -57,6 +57,9 @@ define(['require','./background', './player', './bullet', './asteroid', './field
         this.player.init(playerX, playerY, 150, 150);
 
         this.field = new Field;
+
+        this.collision = new Collision;
+
         return true;
       }
       else {
@@ -96,28 +99,14 @@ define(['require','./background', './player', './bullet', './asteroid', './field
       start2 = timestamp;
     }
 
-    if (timestamp - start3 >= 50) {
+    if (timestamp - start3 >= 100) {
       game.field.pooling();
       game.field.draw();
       start3 = timestamp;
     }
 
-    // if (game.player.x < 20) {
-    //   game.background.move(game.player.speed*0.5,0);
-    //   game.player.x = 20;
-    // }
-    // else if (game.player.x > Math.ceil(game.player.canvasWidth - game.player.width - 20)) {
-    //   game.background.move(-game.player.speed*0.5,0);
-    //   game.player.x = Math.ceil(game.player.canvasWidth - game.player.width - 20);
-    // }
-    // else if (game.player.y < Math.ceil(game.player.canvasHeight*0.3)) {
-    //   game.background.move(0, game.player.speed*0.5);
-    //   game.player.y = Math.ceil(game.player.canvasHeight*0.3);
-    // }
-    // else if (game.player.y > Math.ceil(game.player.canvasHeight*0.9)) {
-    //   game.background.move(0,-game.player.speed*0.5);
-    //   game.player.y = Math.ceil(game.player.canvasHeight*0.9);
-    // }
+    // method to manage collision between Player and borders of canvas
+    game.collision.backgroundPlayer(game.player);
 
     window.requestAnimationFrame(gameLoop);
   };
@@ -130,7 +119,3 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-
-function collisionPlayerBackground() {
-
-}

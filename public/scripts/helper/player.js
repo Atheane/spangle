@@ -25,23 +25,6 @@ define(['./image','./dessin', './key', './bullet'], function(image, Dessin, key,
     this.context.drawImage(image.player, boundariesX[this.i], boundariesY[this.j], image.player.width/boundariesX.length, image.player.height/boundariesY.length, this.x, this.y, this.width, this.height);
    };
 
-
-  Player.prototype.collideBackground = function() {
-    if (this.x < 20) {
-      this.x = 20;
-    }
-    else if (this.x > this.canvasWidth - this.width - 20) {
-      this.x = this.canvasWidth - this.width - 20;
-    }
-    else if (this.y < 20) {
-      this.y = 20;
-    }
-    else if (this.y > Math.ceil(this.canvasHeight - this.height - 20)) {
-      this.y = Math.ceil(this.canvasHeight - this.height -20);
-    }
-
-  };
-
   Player.prototype.move = function() {
     if (key.leftPressed) {
       this.x -= this.speed;
@@ -58,7 +41,7 @@ define(['./image','./dessin', './key', './bullet'], function(image, Dessin, key,
       this.y += this.speed ;
     }
 
-    this.collideBackground();
+    // this.collideBackground();
 
   };
 
