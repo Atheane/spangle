@@ -59,8 +59,6 @@ define(['require','./background', './player', './bullet', './asteroid', './field
         this.player.init(playerX, playerY, 150, 150);
 
         this.field = new Field;
-        this.field.init(0,-150,0,0);
-
         return true;
       }
       else {
@@ -100,14 +98,11 @@ define(['require','./background', './player', './bullet', './asteroid', './field
       start2 = timestamp;
     }
 
-    if (timestamp - start3 >= 60) {
+    if (timestamp - start3 >= 50) {
       game.field.pooling();
       game.field.draw();
       start3 = timestamp;
     }
-
-
-
 
     // if (game.player.x < 20) {
     //   game.background.move(game.player.speed*0.5,0);
