@@ -27,11 +27,11 @@ define(['../jquery'], function ($) {
       console.log('Asteroid Image Loaded');
     });
 
-    image.background.src = '../../assets/backgrounds/paralax_simple.png';
-    image.player.src = '../../assets/spaceships/EnemyDefense.png';
-    image.bulletShort.src = '../../assets/weapons/bullet_blaster_small_single.png';
+    image.background.src = '../../img/paralax_simple.png';
+    image.player.src = '../../img/EnemyDefense.png';
+    image.bulletShort.src = '../../img/bullet_blaster_small_single.png';
     // image.bulletLong.src = '../../assets/weapons/bullet_long_single.png';
-    image.asteroid.src = '../../assets/asteroids/asteroid_01_with_cracks.png';
+    image.asteroid.src = '../../img/asteroid_01_with_cracks.png';
 
   };
 
