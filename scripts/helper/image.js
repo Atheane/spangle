@@ -27,7 +27,7 @@ define(['../jquery'], function ($) {
       console.log('Asteroid Image Loaded');
     });
 
-    image.background.src = '../../assets/backgrounds/background_02_parallax_01.png';
+    image.background.src = '../../assets/backgrounds/paralax_simple.png';
     image.player.src = '../../assets/spaceships/EnemyDefense.png';
     image.bulletShort.src = '../../assets/weapons/bullet_blaster_small_single.png';
     // image.bulletLong.src = '../../assets/weapons/bullet_long_single.png';

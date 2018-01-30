@@ -26,27 +26,23 @@ define(['./image','./dessin', './key', './bullet'], function(image, Dessin, key,
    };
 
 
-  Player.prototype.collideBackground = function(background) {
+  Player.prototype.collideBackground = function() {
     if (this.x < 20) {
-      background.move(this.speed*0.5,0);
       this.x = 20;
     }
     else if (this.x > this.canvasWidth - this.width - 20) {
-      background.move(-this.speed*0.5,0);
       this.x = this.canvasWidth - this.width - 20;
     }
-    else if (this.y < Math.ceil(this.canvasHeight*0.3)) {
-      background.move(0, this.speed*0.5);
-      this.y = Math.ceil(this.canvasHeight*0.3);
+    else if (this.y < 20) {
+      this.y = 20;
     }
-    else if (this.y > Math.ceil(this.canvasHeight*0.8)) {
-      background.move(0,-this.speed*0.5);
-      this.y = Math.ceil(this.canvasHeight*0.8);
+    else if (this.y > Math.ceil(this.canvasHeight - this.height - 20)) {
+      this.y = Math.ceil(this.canvasHeight - this.height -20);
     }
 
   };
 
-  Player.prototype.move = function(background) {
+  Player.prototype.move = function() {
     if (key.leftPressed) {
       this.x -= this.speed;
       (this.i > 0) ? this.i-=1 : this.i=0;
@@ -62,7 +58,7 @@ define(['./image','./dessin', './key', './bullet'], function(image, Dessin, key,
       this.y += this.speed ;
     }
 
-    this.collideBackground(background);
+    this.collideBackground();
 
   };
 

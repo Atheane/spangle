@@ -18,9 +18,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
         this.mainContext = this.mainCanvas.getContext('2d');
         this.mainContext.globalCompositeOperation = 'destination-over';
 
-
         this.playerContext = this.playerCanvas.getContext('2d');
-
 
         this.bgCanvas.width  = window.innerWidth;
         this.bgCanvas.height = window.innerHeight;
@@ -82,7 +80,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 
     // if more than 150 ms since last timestamp
     if (timestamp - start1 >= 50) {
-      game.background.draw(game);
+      game.background.draw();
       game.player.shoot();
       game.player.packBullets.forEach(function(bullet) {
         if (bullet.active) {
@@ -94,7 +92,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 
     if (timestamp - start2 >= 15) {
       game.player.draw();
-      game.player.move(game.background);
+      game.player.move();
       start2 = timestamp;
     }
 
