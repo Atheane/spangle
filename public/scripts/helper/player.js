@@ -32,7 +32,7 @@ define(['./image','./dessin', './key', './bullet'], function(image, Dessin, key,
       var boundariesExplosion = [0, 208, 417, 625, 833, 1041, 1264, 1473, 1681];
 
       this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-      this.context.drawImage(image.explosionBig, boundariesExplosion[this.explodeI], 0, image.explosionBig.width/9, image.explosionBig.height, this.x, this.y, this.width, this.height);
+      this.context.drawImage(image.explosion, boundariesExplosion[this.explodeI], 0, image.explosion.width/9, image.explosion.height, this.x, this.y, this.width, this.height);
       (this.explodeI < 9) ? this.explodeI+=1 : this.explodeI=0;
    }
 

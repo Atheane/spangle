@@ -8,7 +8,7 @@ define(['../jquery'], function ($) {
   image.bulletShort = new Image;
   // image.bulletLong = new Image;
   image.asteroid = new Image;
-  image.explosionBig = new Image;
+  image.explosion = new Image;
 
 
   var imageLoading = function() {
@@ -36,7 +36,7 @@ define(['../jquery'], function ($) {
     image.bulletShort.src = '../../img/bullet_blaster_small_single.png';
     // image.bulletLong.src = '../../assets/weapons/bullet_long_single.png';
     image.asteroid.src = '../../img/asteroid_01_with_cracks.png';
-    image.explosionBig.src = '../../img/explosion_big.png';
+    image.explosion.src = '../../img/explosion_big.png';
   };
 
   imageLoading();
