@@ -1,27 +1,33 @@
-var express = require('express');
-var app = express();
-var path = require('path');
+const express = require('express');
+const app = express();
+const path = require('path');
+const port = process.env.PORT;
 
 
+
+app.use(express.static('assets'));
 
 // app.get('/', function(req, res) {
 //     res.sendFile(path.join(__dirname + '/index.html'))
 // })
 
 app.get("/", (req, res) => {
-   res.send({ hello: "world" });
+ res.send({ hello: "world" });
 });
 
-// app.get('/rgb', function(req, res) {
-//     res.sendFile(path.join(__dirname + '/projects/rgbGame.html'))
-// })
+// app.get("/", (req, res) => {
+//  res.sendFile(path.join(__dirname, "index.html"));
+// });
 
-// app.get('/resugame', function(req, res) {
-//     res.sendFile(path.join(__dirname + '/projects/resuGame.html'))
-// })
 
-// app.use(express.static('assets'))
+app.listen(port, function() {
+  console.log('App is running on port: ' + port);
+});
 
-var PORT = process.env.PORT;
 
-app.listen(PORT);
+
+
+
+
+
+
