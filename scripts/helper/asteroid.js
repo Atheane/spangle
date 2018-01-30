@@ -4,7 +4,7 @@ define(['./image', './dessin'], function(image, Dessin) {
   'use strict';
 
   var Asteroid = function() {
-    this.speed = 1;
+    this.speed = 5;
     this.active = true;
   }
 

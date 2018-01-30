@@ -9,8 +9,7 @@ define(['./image', './dessin', './asteroid'], function(image, Dessin, Asteroid) 
     this.shiftCameraY = 0;
     this.cumShiftX = image.background.width;
     this.cumShiftY = image.background.height;
-    this.packAsteroids = [];
-    this.maxSize = 30;
+
   }
 
   var dessin = new Dessin();
@@ -48,7 +47,7 @@ define(['./image', './dessin', './asteroid'], function(image, Dessin, Asteroid) 
     //   this.y = 0;
     // }
 
-    this.pooling();
+    // this.pooling();
 
     var numImagesX = Math.ceil(this.canvasWidth/this.width) + 1;
     var numImagesY = Math.ceil(this.canvasHeight/this.height) + 1;
@@ -75,35 +74,6 @@ define(['./image', './dessin', './asteroid'], function(image, Dessin, Asteroid) 
     this.shiftCameraX -= x;
     this.shiftCameraY -= y;
   }
-
-  Background.prototype.pooling = function() {
-    if (this.packAsteroids.length < this.maxSize*150) {
-      // if (true) {
-      var asteroid = new Asteroid;
-      var size = 150;
-      asteroid.init(Math.ceil(getRandomInt(this.canvasWidth/12, this.canvasWidth)), -10, 10, 10);
-      this.packAsteroids.push(asteroid);
-    }
-    // else {
-    //   var lastBullet = this.packBullets[this.packBullets.length-1];
-    //   if (lastBullet.active) {
-    //     var bullet = new Bullet;
-    //     bullet.init(this.x+46, this.y+4, 5, 10);
-    //     this.packBullets.unshift(bullet);
-    //   }
-    //   else {
-    //     lastBullet = this.packBullets.pop();
-    //     lastBullet.init(this.x+46, this.y+4, 5, 10);
-    //     lastBullet.active = true;
-    //     this.packBullets.splice(0, 0, lastBullet);
-    //   }
-    // }
-  }
-
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
-
 
 return Background;
 

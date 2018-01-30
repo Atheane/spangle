@@ -1,4 +1,4 @@
-define(['require','./background', './player', './bullet', './asteroid'], function(require, Background, Player, Bullet, Asteroid) {
+define(['require','./background', './player', './bullet', './asteroid', './field'], function(require, Background, Player, Bullet, Asteroid, Field) {
 
   'use strict';
 
@@ -16,7 +16,7 @@ define(['require','./background', './player', './bullet', './asteroid'], functio
         this.bgContext.globalCompositeOperation = 'destination-over';
 
         this.mainContext = this.mainCanvas.getContext('2d');
-        this.mainContext.globalCompositeOperation = 'source-over';
+        this.mainContext.globalCompositeOperation = 'destination-over';
 
 
         this.playerContext = this.playerCanvas.getContext('2d');
@@ -46,13 +46,20 @@ define(['require','./background', './player', './bullet', './asteroid'], functio
         Asteroid.prototype.canvasWidth = this.mainCanvas.width;
         Asteroid.prototype.canvasHeight = this.mainCanvas.height;
 
-        this.background = new Background();
+        Field.prototype.context = this.mainContext;
+        Field.prototype.canvasWidth = this.mainCanvas.width;
+        Field.prototype.canvasHeight = this.mainCanvas.height;
+
+        this.background = new Background;
         this.background.init(0,0,0,0);
 
         this.player = new Player;
         var playerX = this.playerCanvas.width/2-150;
         var playerY = Math.ceil(this.playerCanvas.height*0.8);
         this.player.init(playerX, playerY, 150, 150);
+
+        this.field = new Field;
+        this.field.init(0,-150,0,0);
 
         return true;
       }
@@ -68,13 +75,14 @@ define(['require','./background', './player', './bullet', './asteroid'], functio
 
   var game = new Game();
 
-  var start1, start2;
+  var start1, start2, start3;
   var cum = 0;
   var gameLoop = function(timestamp) {
     if (!start1) { start1 = timestamp; }
     if (!start2) { start2 = timestamp; }
+    if (!start3) { start3 = timestamp; }
 
-    // if more than 50 ms since last timestamp
+    // if more than 150 ms since last timestamp
     if (timestamp - start1 >= 50) {
       game.background.draw(game);
       game.player.shoot();
@@ -83,24 +91,21 @@ define(['require','./background', './player', './bullet', './asteroid'], functio
           bullet.draw();
         }
       });
-      // cum += Math.ceil(start1);
-      // if (cum % 2 === 0) {
-        game.background.packAsteroids.forEach(function(asteroid) {
-          if (asteroid.active) {
-            asteroid.draw();
-          }
-        });
-
-      // }
       start1 = timestamp;
     }
 
     if (timestamp - start2 >= 15) {
       game.player.draw();
       game.player.move(game.background);
-
       start2 = timestamp;
     }
+
+    if (timestamp - start3 >= 60) {
+      game.field.pooling();
+      game.field.draw();
+      start3 = timestamp;
+    }
+
 
 
 
