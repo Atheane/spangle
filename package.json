@@ -1,0 +1,20 @@
+{
+  "name": "spangle",
+  "version": "1.0.0",
+  "description": "CV Game",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Atheane/spangle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Atheane/spangle/issues"
+  },
+  "homepage": "https://github.com/Atheane/spangle#readme"
+}
