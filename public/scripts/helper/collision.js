@@ -50,20 +50,3 @@ define([], function() {
 
 });
 
-
-// if (game.player.x < 20) {
-//   game.background.move(game.player.speed*0.5,0);
-//   game.player.x = 20;
-// }
-// else if (game.player.x > Math.ceil(game.player.canvasWidth - game.player.width - 20)) {
-//   game.background.move(-game.player.speed*0.5,0);
-//   game.player.x = Math.ceil(game.player.canvasWidth - game.player.width - 20);
-// }
-// else if (game.player.y < Math.ceil(game.player.canvasHeight*0.3)) {
-//   game.background.move(0, game.player.speed*0.5);
-//   game.player.y = Math.ceil(game.player.canvasHeight*0.3);
-// }
-// else if (game.player.y > Math.ceil(game.player.canvasHeight*0.9)) {
-//   game.background.move(0,-game.player.speed*0.5);
-//   game.player.y = Math.ceil(game.player.canvasHeight*0.9);
-// }
