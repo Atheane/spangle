@@ -4,7 +4,7 @@ define(['./image', './dessin'], function(image, Dessin) {
   'use strict';
 
   var Asteroid = function() {
-    this.speed = 1;
+    this.speed = 5;
     this.active = true;
   }
 
@@ -14,11 +14,10 @@ define(['./image', './dessin'], function(image, Dessin) {
   Asteroid.prototype = dessin;
 
   Asteroid.prototype.draw = function() {
-    // this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 
     this.context.clearRect(this.x, this.y, this.width, this.height);
     this.y += this.speed;
-    if (this.y > 0 - this.height) {
+    if (this.y < this.canvasHeight) {
       this.context.drawImage(image.asteroid, 0, 0, image.asteroid.width/3, image.asteroid.height/2, this.x, this.y, this.width, this.height);
     }
     else {

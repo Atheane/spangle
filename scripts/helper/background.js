@@ -1,4 +1,4 @@
-define(['./image', './dessin'], function(image, Dessin) {
+define(['./image', './dessin', './asteroid'], function(image, Dessin, Asteroid) {
 
   'use strict';
 
@@ -9,6 +9,7 @@ define(['./image', './dessin'], function(image, Dessin) {
     this.shiftCameraY = 0;
     this.cumShiftX = image.background.width;
     this.cumShiftY = image.background.height;
+
   }
 
   var dessin = new Dessin();
@@ -36,7 +37,6 @@ define(['./image', './dessin'], function(image, Dessin) {
       this.cumShiftY += player.speed;
     }
 
-
     // Pan background
     // this.y += this.speed;
     // this.context.drawImage(image.background, this.x, this.y);
@@ -47,6 +47,7 @@ define(['./image', './dessin'], function(image, Dessin) {
     //   this.y = 0;
     // }
 
+    // this.pooling();
 
     var numImagesX = Math.ceil(this.canvasWidth/this.width) + 1;
     var numImagesY = Math.ceil(this.canvasHeight/this.height) + 1;
