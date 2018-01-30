@@ -99,7 +99,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
       start2 = timestamp;
     }
 
-    if (timestamp - start3 >= 100) {
+    if (timestamp - start3 >= 15) {
       game.field.pooling();
       game.field.draw();
       start3 = timestamp;

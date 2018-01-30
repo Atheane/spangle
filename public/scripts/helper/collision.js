@@ -23,10 +23,20 @@ define([], function() {
   };
 
   Collision.prototype.Field = function(arrayAsteroids, currentAsteroid) {
-    // field est un champ à un moment donné
-    // évolue à chaque update
-    //
-    return false;
+    var collision = false;
+    if (arrayAsteroids.length) {
+      arrayAsteroids.forEach(function(a,i) {
+        if (a !== currentAsteroid) {
+          if (a.x < currentAsteroid.x + currentAsteroid.width &&
+          a.x + a.width > currentAsteroid.x &&
+          a.y < currentAsteroid.y + currentAsteroid.height &&
+          a.height + a.y > currentAsteroid.y) {
+            collision = true;
+          }
+        }
+      });
+    }
+    return collision;
   };
 
 
