@@ -143,6 +143,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     else {
       $('.game-over').show();
       $('.score').hide();
+      $('#shift').show();
     }
 
   };
