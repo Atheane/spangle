@@ -1,8 +1,10 @@
-define(['require','./background', './player', './bullet', './asteroid', './field', './collision'], function(require, Background, Player, Bullet, Asteroid, Field, Collision) {
+define(['require','./background', './player', './bullet', './asteroid', './field', './collision', '../jquery'], function(require, Background, Player, Bullet, Asteroid, Field, Collision, $) {
 
   'use strict';
 
   var Game = function() {
+    this.start1;
+    this.start2;
     this.init = function() {
 
       this.bgCanvas = document.getElementById('background');
@@ -60,6 +62,10 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 
         this.collision = new Collision;
 
+        this.score = 0;
+        this.over = false;
+        // this.lives = 3;
+
         return true;
       }
       else {
@@ -70,19 +76,22 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     this.start = function() {
       gameLoop(0);
     };
+
+    // this.countLives = function() {
+    //   if (!this.player.active) {
+    //     this.lives-=1;
+    //   }
+    // }
   };
 
   var game = new Game();
 
-  var start1, start2, start3;
-  var cum = 0;
   var gameLoop = function(timestamp) {
-    if (!start1) { start1 = timestamp; }
-    if (!start2) { start2 = timestamp; }
-    if (!start3) { start3 = timestamp; }
+    if (!game.start1) { game.start1 = timestamp; }
+    if (!game.start2) { game.start2 = timestamp; }
 
     // if more than 150 ms since last timestamp
-    if (timestamp - start1 >= 25) {
+    if (timestamp - game.start1 >= 25) {
       game.background.draw();
       game.player.shoot();
       game.player.packBullets.forEach(function(bullet) {
@@ -90,10 +99,10 @@ define(['require','./background', './player', './bullet', './asteroid', './field
           bullet.draw();
         }
       });
-      start1 = timestamp;
+      game.start1 = timestamp;
     }
 
-    if (timestamp - start2 >= 15) {
+    if (timestamp - game.start2 >= 15) {
       game.player.draw();
       game.player.move();
       game.field.pooling();
@@ -102,26 +111,34 @@ define(['require','./background', './player', './bullet', './asteroid', './field
         var collisionPlayer = game.collision.asteroid(game.player, asteroid);
         if (collisionPlayer) {
           game.player.explode();
+          game.over = true;
         }
         game.player.packBullets.forEach(function(bullet) {
           var collisionBullet = game.collision.asteroid(bullet, asteroid);
           if (bullet.active && collisionBullet) {
             asteroid.explode();
+            game.score += 10;
             bullet.active = false;
           }
         });
       });
-      start2 = timestamp;
-    }
 
-    if (timestamp - start3 >= 30) {
-      start3 = timestamp;
+      game.start2 = timestamp;
     }
 
     // method to manage collision between Player and borders of canvas
     game.collision.backgroundPlayer(game.player);
 
-    window.requestAnimationFrame(gameLoop);
+    $('#score').text(game.score);
+    $('#scoreover').text(game.score);
+
+    if (!game.over) {
+      window.requestAnimationFrame(gameLoop);
+    }
+    else {
+      $('.game-over').show();
+    }
+
   };
 
   return game;

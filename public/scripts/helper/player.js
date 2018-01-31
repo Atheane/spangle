@@ -11,6 +11,7 @@ define(['./image','./dessin', './key', './bullet'], function(image, Dessin, key,
     this.packBullets = [];
     this.maxSize = 50;
     this.explodeI = 0;
+    this.active = true;
   };
 
   var dessin = new Dessin();
@@ -25,6 +26,7 @@ define(['./image','./dessin', './key', './bullet'], function(image, Dessin, key,
     this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     this.context.drawImage(image.player, boundariesX[this.i], boundariesY[this.j], image.player.width/boundariesX.length, image.player.height/boundariesY.length, this.x, this.y, this.width, this.height);
 
+    this.active = true;
    };
 
    Player.prototype.explode = function() {
@@ -34,6 +36,8 @@ define(['./image','./dessin', './key', './bullet'], function(image, Dessin, key,
       this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
       this.context.drawImage(image.explosion, boundariesExplosion[this.explodeI], 0, image.explosion.width/9, image.explosion.height, this.x, this.y, this.width, this.height);
       (this.explodeI < 9) ? this.explodeI+=1 : this.explodeI=0;
+
+      this.active = false;
    }
 
   Player.prototype.move = function() {
