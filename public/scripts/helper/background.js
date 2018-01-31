@@ -15,7 +15,7 @@ define(['./image', './dessin', './asteroid'], function(image, Dessin, Asteroid) 
     // Pan background
     this.y += this.speed;
 
-    var numImagesX = Math.ceil(this.canvasWidth / image.background.width) + 1;
+    var numImagesX = Math.ceil(this.canvasWidth / image.background.width) +1 ;
     var numImagesY = Math.ceil(this.canvasHeight / image.background.height) + 1;
 
     for (var i = 0; i < numImagesX; i++) {

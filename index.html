@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <title> CV Game - Elodie Royant</title>
 
-  <style>
+<link href="https://fonts.googleapis.com/css?family=Quantico" rel="stylesheet">
+ <style>
 
     html, body {
       width:  100%;
@@ -12,18 +13,47 @@
       margin: 0px;
     }
 
-    * { padding: 0; margin: 0; }
-
-    .container {
-      position: relative;
+    #container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
     }
 
     canvas {
       position: absolute;
-      top: 0px;
-      left: 0px;
+    /*  left: 20%;
+      right: 20%;*/
       background: transparent;
+      /*width: 60%;*/
     }
+
+    .score {
+      position: absolute;
+      right: 10%;
+      top: 10%;
+      color: #FFB31F;
+      font-size: 50px;
+      font-family: 'Quantico', sans-serif;
+      cursor: default;
+      }
+
+    .game-over {
+      position: absolute;
+      top: 30%;
+      left: 30%;
+      bottom: 30%;
+      right: 30%;
+      width: 40%;
+      height: 40%;
+      border: solid 4px #FFB31F;
+      color: #FFB31F;
+      font-family: 'Quantico', sans-serif;
+      font-size: 100px;
+      text-align: center;
+      padding-top: 5%;
+      cursor: default;
+      display: none;
+      }
 
     #background {
       z-index: -2;
@@ -53,17 +83,15 @@
     <canvas id="player">
       Your browser does not support canvas :(, please try with another one!
     </canvas>
-<!--   <script>
-    var requirejs = require('requirejs');
+    <div class="score">
+      Score: <span id="score"></span>
+    </div>
+    <div class="game-over">
+      GAME OVER
+      <br>
+      Score: <span id="scoreover"></span>
+    </div>
 
-    requirejs.config({
-        //Pass the top-level main.js/index.js require
-        //function to requirejs so that node modules
-        //are loaded relative to the top-level JS file.
-        nodeRequire: require
-    });
-
-  </script> -->
    <script data-main="scripts/main" src="scripts/require.js">
    </script>
 

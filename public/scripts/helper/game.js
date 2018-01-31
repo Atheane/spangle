@@ -1,4 +1,4 @@
-define(['require','./background', './player', './bullet', './asteroid', './field', './collision'], function(require, Background, Player, Bullet, Asteroid, Field, Collision) {
+define(['require','./background', './player', './bullet', './asteroid', './field', './collision', '../jquery'], function(require, Background, Player, Bullet, Asteroid, Field, Collision, $) {
 
   'use strict';
 
@@ -129,8 +129,14 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     // method to manage collision between Player and borders of canvas
     game.collision.backgroundPlayer(game.player);
 
+    $('#score').text(game.score);
+    $('#scoreover').text(game.score);
+
     if (!game.over) {
       window.requestAnimationFrame(gameLoop);
+    }
+    else {
+      $('.game-over').show();
     }
 
   };
