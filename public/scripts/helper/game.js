@@ -109,12 +109,17 @@ define(['require','./background', './player', './bullet', './asteroid', './field
       game.field.draw();
       game.field.packAsteroids.forEach(function(asteroid) {
         var collisionPlayer = game.collision.asteroid(game.player, asteroid);
+
         if (collisionPlayer) {
           game.player.explode();
           game.over = true;
         }
         game.player.packBullets.forEach(function(bullet) {
           var collisionBullet = game.collision.asteroid(bullet, asteroid);
+          console.log(bullet.active);
+          console.log(collisionBullet);
+          console.log(bullet);
+          console.log(asteroid);
           if (bullet.active && collisionBullet) {
             asteroid.explode();
             game.score += 10;
@@ -137,6 +142,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     }
     else {
       $('.game-over').show();
+      $('.score').hide();
     }
 
   };

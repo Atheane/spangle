@@ -21,6 +21,7 @@ require(['helper/game', 'helper/key', 'jquery'],
 
 
  $(document).keydown(function(e) {
+    e.preventDefault();
     if (e.keyCode === 39) {
       key.rightPressed = true;
     }
@@ -43,6 +44,7 @@ require(['helper/game', 'helper/key', 'jquery'],
   });
 
   $(document).keyup(function(e) {
+    e.preventDefault();
     if(e.keyCode === 39) {
       key.rightPressed = false;
       game.player.i = 1;
