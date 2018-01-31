@@ -33,7 +33,7 @@ require(['helper/game', 'helper/key', 'jquery'],
     else if(e.keyCode === 38) {
       key.upPressed = true;
     }
-    if (e.keyCode === 77) {
+    if (e.keyCode === 32) {
       key.mitraillettePressed = true;
     }
     if (e.keyCode === 82) {
@@ -57,7 +57,7 @@ require(['helper/game', 'helper/key', 'jquery'],
     else if(e.keyCode === 38) {
       key.upPressed = false;
     }
-    if (e.keyCode === 77) {
+    if (e.keyCode === 32) {
       key.mitraillettePressed = false;
     }
     if (e.keyCode === 82) {

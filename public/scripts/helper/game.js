@@ -82,7 +82,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     if (!start3) { start3 = timestamp; }
 
     // if more than 150 ms since last timestamp
-    if (timestamp - start1 >= 50) {
+    if (timestamp - start1 >= 25) {
       game.background.draw();
       game.player.shoot();
       game.player.packBullets.forEach(function(bullet) {

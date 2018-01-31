@@ -30,15 +30,6 @@ define(['./image', './dessin', './asteroid'], function(image, Dessin, Asteroid) 
       this.y = 0;
     }
 
-
-    // this.context.drawImage(image.background, 0, 0, image.background.width, image.background.height, );
-    // // Draw another image at the top edge of the first image
-    // // this.context.drawImage(image.background, this.x, this.y - this.canvasHeight);
-    // // If the image scrolled off the screen, reset
-    // if (this.y >= this.canvasHeight) {
-    //   this.y = 0;
-    // }
-
    };
 
 return Background;
