@@ -11,6 +11,10 @@ app.use(express.static('public'));
 //     res.sendFile(path.join(__dirname + '/index.html'))
 // })
 
+// app.get('/', function(req, res) {
+//     res.sendFile(path.join(__dirname + '/index.html'))
+// })
+
 app.get("/", (req, res) => {
  res.sendFile(path.join(__dirname, "index.html"));
 });
@@ -19,6 +23,8 @@ app.get("/", (req, res) => {
 app.listen(port, function() {
   console.log('App is running on port: ' + port);
 });
+
+
 
 
 

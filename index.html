@@ -6,22 +6,21 @@
 
 <link href="https://fonts.googleapis.com/css?family=Quantico" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
  <style>
 
     html, body {
       width:  100%;
-      height: 100%;
+      height: 100vh;
       margin: 0px;
     }
 
     * { padding: 0px }
 
     #container {
-      position: absolute;
       width: 100%;
-      height: 100%;
+      height: 100vh;
       background-image: url("img/background.jpg");
-      z-index: -3;
     }
 
 
@@ -35,7 +34,7 @@
       height: 60%;
       border: solid 1px #57C5E8;
       border-radius: 15px;
-
+      z-index: 0;
     }
 
     .score {
@@ -45,12 +44,11 @@
       color: #57C5E8;
       font-size: 1.2em;
       font-family: 'Quantico', sans-serif;
-      cursor: default;
     }
 
     .game-over {
       position: absolute;
-      top: 40%;
+      top: 30%;
       left: 40%;
       bottom: 40%;
       right: 40%;
@@ -66,7 +64,7 @@
     }
 
     #background {
-      z-index: -2;
+      z-index: 0;
     }
 
     #main {
@@ -74,7 +72,7 @@
     }
 
     #player {
-      z-index: -1;
+      z-index: 0;
     }
 
     #shift {
@@ -85,10 +83,13 @@
       right: 35%;
       width: 30%;
       height: 30%;
-      display: none;
+      display: block;
       border: solid 2px #0A526E;
-      background-color: rgba(10, 82, 110, .2);
+      background-color: rgba(10, 82, 110, .5);
       border-radius: 15px;
+      text-align: center;
+      color: #57C5E8;
+      font-family: 'Quantico', sans-serif;
     }
 
     .button {
@@ -96,7 +97,6 @@
       width: 50px;
       height: 20px;
       position: absolute;
-      bottom: 15%;
       left: 30%;
       font-weight: bold;
       border-radius: 15px;
@@ -104,6 +104,7 @@
       text-align: center;
       border: solid 1px #57C5E8;
       box-shadow: 5px 2px 2px #09222F;
+      z-index: 1;
     }
 
     a {
@@ -113,8 +114,24 @@
 
     }
 
+    #jouer {
+      bottom: 10%;
+    }
+
     #cv {
+      bottom: 10%;
       left: 55%;
+    }
+
+    #rejouer {
+      bottom: -90px;
+      left: 38%;
+      padding-bottom: 20px;
+    }
+
+    h1 {
+      padding: 0px;
+      font-weight: lighter;
     }
 
   </style>
@@ -125,11 +142,12 @@
 
   <div id="container">
     <div id="shift">
-      <div class="button" id="jouer"> <a href="#"> <i class="fa fa-rocket" aria-hidden="true"></i>
- </a> </div>
-      <div class="button" id="cv"> <a href="CV_Elodie_ROYANT.pdf"> <i class="fa fa-user" aria-hidden="true"></i>
- </a> </div>
+      <h1> Asteroid Field </h1>
+      <span> Saurez-vous naviguer entre les obstacles ? Espace pour tirer, attention, l'un des astéroîdes est indestructible ! </span>
+      <a href="#" ><div class="button" id="jouer"> <i class="fa fa-rocket" aria-hidden="true"></i></div></a>
+      <a href="CV_Elodie_ROYANT.pdf" target="_blank"><div class="button" id="cv"> <i class="fa fa-user" aria-hidden="true"></i></div></a>
     </div>
+
     <canvas id="background" >
     Your browser does not support canvas :(, please try with another one!
     </canvas>
@@ -143,9 +161,9 @@
       Score: <span id="score"></span>
     </div>
     <div class="game-over">
-      GAME OVER
-      <br>
+    <h2> GAME OVER </h2>
       Score: <span id="scoreover"></span>
+      <a href="#"><div class="button" id="rejouer"> <i class="fa fa-rocket" aria-hidden="true"></i></div></a>
     </div>
 
 

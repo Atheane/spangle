@@ -12,16 +12,25 @@ require(['helper/game', 'helper/key', 'jquery'],
 
   require(['./domReady'], function (domReady) {
     domReady(function () {
-      if (game.init()) {
-        game.start();
-        console.log("game start");
-      }
+      $("#jouer").click(function() {
+      $("#shift").hide();
+        if (game.init()) {
+          game.start();
+          console.log("game start");
+        }
+      });
     });
   });
 
+  $("#rejouer").click(function() {
+      $(".game-over").hide();
+        if (game.init()) {
+          game.start();
+          console.log("game start");
+        }
+      });
 
  $(document).keydown(function(e) {
-    e.preventDefault();
     if (e.keyCode === 39) {
       key.rightPressed = true;
     }
@@ -44,7 +53,6 @@ require(['helper/game', 'helper/key', 'jquery'],
   });
 
   $(document).keyup(function(e) {
-    e.preventDefault();
     if(e.keyCode === 39) {
       key.rightPressed = false;
       game.player.i = 1;
