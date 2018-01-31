@@ -12,13 +12,23 @@ require(['helper/game', 'helper/key', 'jquery'],
 
   require(['./domReady'], function (domReady) {
     domReady(function () {
-      if (game.init()) {
-        game.start();
-        console.log("game start");
-      }
+      $("#jouer").click(function() {
+      $("#shift").hide();
+        if (game.init()) {
+          game.start();
+          console.log("game start");
+        }
+      });
     });
   });
 
+  $("#rejouer").click(function() {
+      $(".game-over").hide();
+        if (game.init()) {
+          game.start();
+          console.log("game start");
+        }
+      });
 
  $(document).keydown(function(e) {
     if (e.keyCode === 39) {
