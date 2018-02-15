@@ -77,11 +77,6 @@ define(['require','./background', './player', './bullet', './asteroid', './field
       gameLoop(0);
     };
 
-    // this.countLives = function() {
-    //   if (!this.player.active) {
-    //     this.lives-=1;
-    //   }
-    // }
   };
 
   var game = new Game();
@@ -111,18 +106,19 @@ define(['require','./background', './player', './bullet', './asteroid', './field
         var collisionPlayer = game.collision.asteroid(game.player, asteroid);
 
         if (collisionPlayer) {
-          game.player.explode();
-          game.over = true;
+          if (asteroid.active && !asteroid.skill) {
+            game.player.explode();
+            game.over = true;
+          } else {
+            // ninja technic to make asteroid disapear after collision
+            asteroid.explodeK = 9;
+            game.score = 50;
+          }
         }
         game.player.packBullets.forEach(function(bullet) {
           var collisionBullet = game.collision.asteroid(bullet, asteroid);
-          console.log(bullet.active);
-          console.log(collisionBullet);
-          console.log(bullet);
-          console.log(asteroid);
           if (bullet.active && collisionBullet) {
             asteroid.explode();
-            game.score += 10;
             bullet.active = false;
           }
         });
@@ -141,7 +137,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
       window.requestAnimationFrame(gameLoop);
     }
     else {
-      $('.game-over').show();
+      $('#game-over').show();
       $('.score').hide();
     }
 

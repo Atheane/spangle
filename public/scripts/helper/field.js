@@ -15,12 +15,13 @@ define(['./image', './dessin', './asteroid', './collision'], function(image, Des
 
     var collision = new Collision;
 
+    var that = this;
     this.packAsteroids.forEach(function(asteroid, index, array) {
       if (!collision.Field(array, asteroid) && asteroid.active) {
         asteroid.draw();
       }
       else {
-        asteroid.init(0,0,0,0);
+        array.splice(index, 1);
       }
     });
   };

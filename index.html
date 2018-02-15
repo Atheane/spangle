@@ -46,20 +46,20 @@
       font-family: 'Quantico', sans-serif;
     }
 
-    .game-over {
+    #game-over {
       position: absolute;
-      top: 30%;
-      left: 40%;
-      bottom: 40%;
-      right: 40%;
-      width: 20%;
-      height: 20%;
+      top: 35%;
+      bottom: 35%;
+      left: 35%;
+      right: 35%;
+      width: 30%;
+      height: 30%;
+      border: solid 2px #0A526E;
+      background-color: rgba(10, 82, 110, .5);
+      border-radius: 15px;
+      text-align: center;
       color: #57C5E8;
       font-family: 'Quantico', sans-serif;
-      font-size: 1.5em;
-      text-align: center;
-      padding: 0px;
-      padding-top: 20px;
       display: none;
     }
 
@@ -88,6 +88,7 @@
       background-color: rgba(10, 82, 110, .5);
       border-radius: 15px;
       text-align: center;
+      font-size: 20px;
       color: #57C5E8;
       font-family: 'Quantico', sans-serif;
     }
@@ -100,7 +101,7 @@
       left: 30%;
       font-weight: bold;
       border-radius: 15px;
-      padding: 10px 15px 10px 15px;
+      padding: 10px 25px 15px 15px;
       text-align: center;
       border: solid 1px #57C5E8;
       box-shadow: 5px 2px 2px #09222F;
@@ -116,6 +117,7 @@
 
     #jouer {
       bottom: 10%;
+      /*padding-right: 25px;*/
     }
 
     #cv {
@@ -124,9 +126,8 @@
     }
 
     #rejouer {
-      bottom: -90px;
-      left: 38%;
-      padding-bottom: 20px;
+      bottom: 10%;
+      /*padding-right: 25px;*/
     }
 
     h1 {
@@ -141,11 +142,12 @@
 <body>
 
   <div id="container">
+
     <div id="shift">
-      <h1> Asteroid Field </h1>
-      <span> Saurez-vous naviguer entre les obstacles ? Espace pour tirer, attention, l'un des astéroîdes est indestructible ! </span>
-      <a href="#" ><div class="button" id="jouer"> <i class="fa fa-rocket" aria-hidden="true"></i></div></a>
-      <a href="CV_Elodie_ROYANT.pdf" target="_blank"><div class="button" id="cv"> <i class="fa fa-user" aria-hidden="true"></i></div></a>
+      <h2> Asteroid Field </h2>
+      <p> Les asteroïdes cachent des compétences, détruisez les pour les obtenir! </p>
+      <a href="#" ><div class="button" id="jouer"> Jouer </i></div></a>
+      <a href="CV_Elodie_ROYANT.pdf" target="_blank"><div class="button" id="cv"> CV </div></a>
     </div>
 
     <canvas id="background" >
@@ -157,16 +159,19 @@
     <canvas id="player">
       Your browser does not support canvas :(, please try with another one!
     </canvas>
+
     <div class="score">
       Score: <span id="score"></span>
     </div>
-    <div class="game-over">
-    <h2> GAME OVER </h2>
-      Score: <span id="scoreover"></span>
-      <a href="#"><div class="button" id="rejouer"> <i class="fa fa-rocket" aria-hidden="true"></i></div></a>
+
+    <div id="game-over">
+      <br>
+      <h2> GAME OVER </h2>
+      <h3> Score: <span id="scoreover"></span> </h3>
+      <br>
+      <a href="#" ><div class="button" id="rejouer"> Rejouer </i></div></a>
+      <a href="CV_Elodie_ROYANT.pdf" target="_blank"><div class="button" id="cv"> CV </div></a>
     </div>
-
-
 
    <script data-main="scripts/main" src="scripts/require.js">
    </script>

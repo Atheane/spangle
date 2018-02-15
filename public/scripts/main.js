@@ -22,12 +22,14 @@ require(['helper/game', 'helper/key', 'jquery'],
     });
   });
 
+  var gameOverHide = false;
+
   $("#rejouer").click(function() {
-      $(".game-over").hide();
-        if (game.init()) {
-          game.start();
-          console.log("game start");
-        }
+      $("#game-over").toggle();
+      if (game.init()) {
+        game.start();
+        console.log("game start");
+      }
       });
 
  $(document).keydown(function(e) {
