@@ -1,5 +1,7 @@
 
-define(['./image', './dessin'], function(image, Dessin) {
+
+
+define(['./image', './dessin', './skills'], function(image, Dessin, skills) {
 
   'use strict';
 
@@ -32,7 +34,7 @@ define(['./image', './dessin'], function(image, Dessin) {
       this.context.drawImage(image.explosion, boundariesExplosion[this.explodeK], 0, image.explosion.width/9, image.explosion.height, this.x, this.y, this.width, this.height);
       this.explodeK += 1;
     } else if (this.y < this.canvasHeight && this.explodeI === 2 && this.explodeJ === 1 && this.explodeK === 8) {
-      this.context.drawImage(image.html, this.x, this.y, this.width, this.height);
+      this.context.drawImage(image[skills.skills[0]], this.x, this.y, this.width, image[skills.skills[0]].height * this.width / image[skills.skills[0]].width);
       this.skill = true;
     }
     else {

@@ -1,4 +1,4 @@
-define(['require','./background', './player', './bullet', './asteroid', './field', './collision', '../jquery'], function(require, Background, Player, Bullet, Asteroid, Field, Collision, $) {
+define(['require','./background', './player', './bullet', './asteroid', './field', './collision', './skills', '../jquery'], function(require, Background, Player, Bullet, Asteroid, Field, Collision, skills, $) {
 
   'use strict';
 
@@ -112,7 +112,11 @@ define(['require','./background', './player', './bullet', './asteroid', './field
           } else {
             // ninja technic to make asteroid disapear after collision
             asteroid.explodeK = 9;
-            game.score = 50;
+            skills.skills.shift();
+            game.score += 50;
+            //to-do : un seul event, meme si on reste plusieurs loop dans la zone de collision
+            // car la on a plusieurs shifts
+            // et plusieurs increments de +50
           }
         }
         game.player.packBullets.forEach(function(bullet) {
