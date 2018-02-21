@@ -63,6 +63,23 @@
       display: none;
     }
 
+    #game-finished {
+      position: absolute;
+      top: 35%;
+      bottom: 35%;
+      left: 35%;
+      right: 35%;
+      width: 30%;
+      height: 30%;
+      border: solid 2px #0A526E;
+      background-color: rgba(10, 82, 110, .5);
+      border-radius: 15px;
+      text-align: center;
+      color: #57C5E8;
+      font-family: 'Quantico', sans-serif;
+      display: none;
+    }
+
     #background {
       z-index: 0;
     }
@@ -127,6 +144,7 @@
 
     #rejouer {
       bottom: 10%;
+      left: 40%;
       /*padding-right: 25px;*/
     }
 
@@ -164,13 +182,21 @@
       Score: <span id="score"></span>
     </div>
 
+    <div id="game-finished">
+      <br>
+      <h2> Vous avez gagné ! </h2>
+      <h3> Score: <span id="scoreover"></span> </h3>
+      <br>
+      <a href="#" ><div class="button" id="rejouer"> Rejouer </i></div></a>
+      <a href="CV_Elodie_ROYANT.pdf" target="_blank"><div class="button" id="cv"> CV </div></a>
+    </div>
+
     <div id="game-over">
       <br>
       <h2> GAME OVER </h2>
       <h3> Score: <span id="scoreover"></span> </h3>
       <br>
       <a href="#" ><div class="button" id="rejouer"> Rejouer </i></div></a>
-      <a href="CV_Elodie_ROYANT.pdf" target="_blank"><div class="button" id="cv"> CV </div></a>
     </div>
 
    <script data-main="scripts/main" src="scripts/require.js">

@@ -7,6 +7,7 @@ define([], function() {
 
   Skills.prototype.init = function() {
     this.remainingSkills = ['html', 'css', 'js', 'jquery', 'angular', 'mongodb', 'node', 'express', 'ajax', 'meteor', 'ruby', 'ror', 'postgresql', 'python', 'd3', 'react', 'redux'];
+
     this.collectedSkills = [];
     this.currentSkill = 'html';
   }

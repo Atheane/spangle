@@ -26,6 +26,7 @@ require(['helper/game', 'helper/key', 'jquery'],
 
   $("#rejouer").click(function() {
       $("#game-over").toggle();
+      $("#game-finished").toggle();
       if (game.init()) {
         game.start();
         console.log("game start");

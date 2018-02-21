@@ -129,6 +129,8 @@ define(['require','./background', './player', './bullet', './asteroid', './field
             // ninja technique to make draw disapear when the skill is collected
             asteroid.explodeK = 9;
             game.score += 50;
+            game.skills.collectedSkills.push(asteroid.skill);
+            console.log(game.skills.collectedSkills.filter(onlyUnique));
             //to-do : un seul event, meme si on reste plusieurs loop dans la zone de collision
             // car la on a plusieurs shifts
             // et plusieurs increments de +50
@@ -155,17 +157,29 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     // method to manage collision between Player and borders of canvas
     game.collision.backgroundPlayer(game.player);
 
+    if (game.skills.collectedSkills.filter(onlyUnique).length === 17) {
+      game.finished = true;
+    }
+
+    if (game.skills.collectedSkills.filter(onlyUnique).length < 5 && !game.skills.currentSkill) {
+      game.over = true;
+    }
 
 
     $('#score').text(game.score);
     $('#scoreover').text(game.score);
 
-    if (!game.over) {
+    if (!game.over && !game.finished) {
       window.requestAnimationFrame(gameLoop);
     }
     else {
-      $('#game-over').show();
-      $('.score').hide();
+      if (game.over) {
+        $('#game-over').show();
+        // $('.score').hide();
+      } else {
+        $('#game-finished').show();
+        // $('.score').hide();
+      }
     }
 
   };
@@ -178,4 +192,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}
 
