@@ -11,7 +11,7 @@ define(['./image', './dessin', './skills'], function(image, Dessin, skills) {
     this.explodeI = 0;
     this.explodeJ = 0;
     this.explodeK = 0;
-    this.skill = false;
+    this.skill = skills.skills[0] ;
   }
 
   var dessin = new Dessin;
@@ -34,11 +34,9 @@ define(['./image', './dessin', './skills'], function(image, Dessin, skills) {
       this.context.drawImage(image.explosion, boundariesExplosion[this.explodeK], 0, image.explosion.width/9, image.explosion.height, this.x, this.y, this.width, this.height);
       this.explodeK += 1;
     } else if (this.y < this.canvasHeight && this.explodeI === 2 && this.explodeJ === 1 && this.explodeK === 8) {
-      this.context.drawImage(image[skills.skills[0]], this.x, this.y, this.width, image[skills.skills[0]].height * this.width / image[skills.skills[0]].width);
-      this.skill = true;
+      this.context.drawImage(image[this.skill], this.x, this.y, this.width, image[this.skill].height * this.width / image[this.skill].width);
     }
     else {
-      this.skill = false;
       this.active = false;
       this.explodeI = 0;
       this.explodeJ = 0;
