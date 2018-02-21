@@ -12,7 +12,9 @@ define(['./image', './dessin', './skills'], function(image, Dessin, skills) {
     this.explodeJ = 0;
     this.explodeK = 0;
     this.exploded = false;
-    this.skill = 'html';
+    // this.skill = skills.skills[0];
+    this.oldAsteroidStatus = false;
+    this.newAsteroidStatus = false;
   }
 
   var dessin = new Dessin;
@@ -20,7 +22,7 @@ define(['./image', './dessin', './skills'], function(image, Dessin, skills) {
   // heritage from Dessin constructor function (method init, canvasHeight and canvasWidth)
   Asteroid.prototype = dessin;
 
-  Asteroid.prototype.draw = function() {
+  Asteroid.prototype.draw = function(skill) {
 
     this.context.clearRect(this.x, this.y, this.width, this.height);
     this.y += this.speed;
@@ -35,7 +37,9 @@ define(['./image', './dessin', './skills'], function(image, Dessin, skills) {
       this.context.drawImage(image.explosion, boundariesExplosion[this.explodeK], 0, image.explosion.width/9, image.explosion.height, this.x, this.y, this.width, this.height);
       this.explodeK += 1;
     } else if (this.y < this.canvasHeight && this.explodeI === 2 && this.explodeJ === 1 && this.explodeK === 8) {
-      this.context.drawImage(image[this.skill], this.x, this.y, this.width, image[this.skill].height * this.width / image[this.skill].width);
+      if (skill) {
+        this.context.drawImage(image[skill], this.x, this.y, this.width, image[skill].height * this.width / image[skill].width);
+      }
     }
     else {
       this.active = false;
@@ -63,13 +67,6 @@ define(['./image', './dessin', './skills'], function(image, Dessin, skills) {
     }
 
   };
-
-  Asteroid.prototype.updateSkill = function() {
-    console.log(this.skill);
-    console.log(skills.skills);
-    this.skill = skills.skills[0];
-    skills.skills.shift();
-  }
 
   return Asteroid;
 
