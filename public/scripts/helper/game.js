@@ -85,8 +85,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 
   var game = new Game();
 
-  var oldAsteroidStatus = false;
-  var newAsteroidStatus = false;
+  var skill = 'html';
 
   var gameLoop = function(timestamp) {
     if (!game.start1) { game.start1 = timestamp; }
@@ -111,10 +110,11 @@ define(['require','./background', './player', './bullet', './asteroid', './field
       // game.field.draw();
       game.field.packAsteroids.forEach(function(asteroid, index, array) {
         asteroid.oldAsteroidStatus = asteroid.exploded;
+
         var collisionPlayer = game.collision.asteroid(game.player, asteroid);
 
         if (!game.collision.field(array, asteroid) && asteroid.active) {
-          asteroid.draw(game.skills.currentSkill);
+          asteroid.draw();
           game.skills.updateCurrentSkill();
         }
         else {
@@ -129,7 +129,6 @@ define(['require','./background', './player', './bullet', './asteroid', './field
             // ninja technique to make draw disapear when the skill is collected
             asteroid.explodeK = 9;
             game.score += 50;
-            game.skills.updateCollectedSkills ();
             //to-do : un seul event, meme si on reste plusieurs loop dans la zone de collision
             // car la on a plusieurs shifts
             // et plusieurs increments de +50
@@ -142,6 +141,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
             bullet.active = false;
             asteroid.newAsteroidStatus = asteroid.exploded;
             if (asteroid.newAsteroidStatus !== asteroid.oldAsteroidStatus) {
+              asteroid.skill = game.skills.currentSkill;
               game.skills.updateRemainingSkills();
             }
           }
