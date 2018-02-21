@@ -11,7 +11,8 @@ define(['./image', './dessin', './skills'], function(image, Dessin, skills) {
     this.explodeI = 0;
     this.explodeJ = 0;
     this.explodeK = 0;
-    this.skill = skills.skills[0] ;
+    this.exploded = false;
+    this.skill = 'html';
   }
 
   var dessin = new Dessin;
@@ -57,8 +58,18 @@ define(['./image', './dessin', './skills'], function(image, Dessin, skills) {
     else if (this.explodeI < 2 && this.explodeJ === 1) {
       this.explodeI += 1;
     }
+    else {
+      this.exploded = true;
+    }
 
   };
+
+  Asteroid.prototype.updateSkill = function() {
+    console.log(this.skill);
+    console.log(skills.skills);
+    this.skill = skills.skills[0];
+    skills.skills.shift();
+  }
 
   return Asteroid;
 

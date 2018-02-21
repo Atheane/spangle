@@ -81,6 +81,9 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 
   var game = new Game();
 
+  var oldAsteroidStatus = false;
+  var newAsteroidStatus = false;
+
   var gameLoop = function(timestamp) {
     if (!game.start1) { game.start1 = timestamp; }
     if (!game.start2) { game.start2 = timestamp; }
@@ -103,16 +106,16 @@ define(['require','./background', './player', './bullet', './asteroid', './field
       game.field.pooling();
       game.field.draw();
       game.field.packAsteroids.forEach(function(asteroid) {
+        asteroid.oldAsteroidStatus = asteroid.exploded;
         var collisionPlayer = game.collision.asteroid(game.player, asteroid);
 
         if (collisionPlayer) {
-          if (asteroid.active && !asteroid.skill) {
+          if (asteroid.active && asteroid.exploded === false) {
             game.player.explode();
             game.over = true;
           } else {
-            // ninja technic to make asteroid disapear after collision
+            // ninja technique to make draw disapear when the skill is collected
             asteroid.explodeK = 9;
-            skills.skills.shift();
             game.score += 50;
             //to-do : un seul event, meme si on reste plusieurs loop dans la zone de collision
             // car la on a plusieurs shifts
@@ -124,8 +127,13 @@ define(['require','./background', './player', './bullet', './asteroid', './field
           if (bullet.active && collisionBullet) {
             asteroid.explode();
             bullet.active = false;
+            asteroid.newAsteroidStatus = asteroid.exploded;
+            if (asteroid.newAsteroidStatus !== asteroid.oldAsteroidStatus) {
+              asteroid.updateSkill();
+            }
           }
         });
+
       });
 
       game.start2 = timestamp;
@@ -133,6 +141,8 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 
     // method to manage collision between Player and borders of canvas
     game.collision.backgroundPlayer(game.player);
+
+
 
     $('#score').text(game.score);
     $('#scoreover').text(game.score);
@@ -154,4 +164,5 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
+
 

@@ -17,7 +17,7 @@ define(['./image', './dessin', './asteroid', './collision'], function(image, Des
 
     var that = this;
     this.packAsteroids.forEach(function(asteroid, index, array) {
-      if (!collision.Field(array, asteroid) && asteroid.active) {
+      if (!collision.field(array, asteroid) && asteroid.active) {
         asteroid.draw();
       }
       else {
