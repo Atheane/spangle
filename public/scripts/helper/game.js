@@ -107,7 +107,6 @@ define(['require','./background', './player', './bullet', './asteroid', './field
       game.player.draw();
       game.player.move();
       game.field.pooling();
-      // game.field.draw();
       game.field.packAsteroids.forEach(function(asteroid, index, array) {
         asteroid.oldAsteroidStatus = asteroid.exploded;
 
@@ -127,17 +126,16 @@ define(['require','./background', './player', './bullet', './asteroid', './field
             game.over = true;
           } else {
             // ninja technique to make draw disapear when the skill is collected
-            asteroid.explodeK = 9;
-            game.score += 50;
             game.skills.collectedSkills.push(asteroid.skill);
-            console.log(game.skills.collectedSkills.filter(onlyUnique));
-            //to-do : un seul event, meme si on reste plusieurs loop dans la zone de collision
-            // car la on a plusieurs shifts
-            // et plusieurs increments de +50
+            game.score += 50;
+            asteroid.explodeK = 9;
           }
         }
+
+        // var bullet = game.player.packBullets[0];
+
         game.player.packBullets.forEach(function(bullet) {
-          var collisionBullet = game.collision.asteroid(bullet, asteroid);
+          var collisionBullet = game.collision.asteroid(asteroid, bullet);
           if (bullet.active && collisionBullet) {
             asteroid.explode();
             bullet.active = false;
