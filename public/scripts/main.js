@@ -22,16 +22,31 @@ require(['helper/game', 'helper/key', 'jquery'],
     });
   });
 
-  var gameOverHide = false;
+  require(['./domReady'], function (domReady) {
+    domReady(function () {
+      $("#rejouer-lost").click(function() {
+        $("#game-over").hide();
+        if (game.init()) {
+          game.start();
+          console.log("game restart");
+        }
+        });
+    });
+  });
 
-  $("#rejouer").click(function() {
-      $("#game-over").toggle();
-      $("#game-finished").toggle();
-      if (game.init()) {
-        game.start();
-        console.log("game start");
-      }
-      });
+  require(['./domReady'], function (domReady) {
+    domReady(function () {
+      $("#rejouer-win").click(function() {
+        $("#game-finished").hide();
+        if (game.init()) {
+          game.start();
+          console.log("game restart");
+        }
+        });
+    });
+  });
+
+
 
  $(document).keydown(function(e) {
     if (e.keyCode === 39) {

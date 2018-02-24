@@ -37,7 +37,7 @@
       z-index: 0;
     }
 
-    .score {
+    .score, .score-win, .score-lost {
       position: absolute;
       right: 25%;
       top: 25%;
@@ -142,7 +142,12 @@
       left: 55%;
     }
 
-    #rejouer {
+    #rejouer-win {
+      bottom: 10%;
+      /*padding-right: 25px;*/
+    }
+
+    #rejouer-lost {
       bottom: 10%;
       left: 40%;
       /*padding-right: 25px;*/
@@ -185,18 +190,18 @@
     <div id="game-finished">
       <br>
       <h2> Vous avez gagné ! </h2>
-      <h3> Score: <span id="scoreover"></span> </h3>
+      <h3> <span id="score-win"></span> </h3>
       <br>
-      <a href="#" ><div class="button" id="rejouer"> Rejouer </i></div></a>
+      <a href="#" ><div class="button" id="rejouer-win"> Rejouer </i></div></a>
       <a href="CV_Elodie_ROYANT.pdf" target="_blank"><div class="button" id="cv"> CV </div></a>
     </div>
 
     <div id="game-over">
       <br>
       <h2> GAME OVER </h2>
-      <h3> Score: <span id="scoreover"></span> </h3>
+      <h3> <span id="score-lost"></span> </h3>
       <br>
-      <a href="#" ><div class="button" id="rejouer"> Rejouer </i></div></a>
+      <a href="#" ><div class="button" id="rejouer-lost"> Rejouer </i></div></a>
     </div>
 
    <script data-main="scripts/main" src="scripts/require.js">

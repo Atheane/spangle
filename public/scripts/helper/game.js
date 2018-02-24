@@ -155,7 +155,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     // method to manage collision between Player and borders of canvas
     game.collision.backgroundPlayer(game.player);
 
-    if (game.skills.collectedSkills.filter(onlyUnique).length === 17) {
+    if (game.skills.collectedSkills.filter(onlyUnique).length === 14) {
       game.finished = true;
     }
 
@@ -164,8 +164,9 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     }
 
 
-    $('#score').text(game.score);
-    $('#scoreover').text(game.score);
+    $('.score').html("Score: " + game.score);
+    $('#score-win').html("Score: " + game.score);
+    $('#score-lost').html("Score: " + game.score);
 
     if (!game.over && !game.finished) {
       window.requestAnimationFrame(gameLoop);
@@ -173,10 +174,12 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     else {
       if (game.over) {
         $('#game-over').show();
-        // $('.score').hide();
-      } else {
+        $('#score-win').show();
+        $('.score').hide();
+      } else if (game.finished) {
         $('#game-finished').show();
-        // $('.score').hide();
+        $('#score-lost').show();
+        $('.score').hide();
       }
     }
 
