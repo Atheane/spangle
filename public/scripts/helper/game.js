@@ -128,13 +128,14 @@ define(['require','./background', './player', './bullet', './asteroid', './field
             if (game.skills.collectedSkills.indexOf(asteroid.skill) === -1) {
               game.skills.collectedSkills.push(asteroid.skill);
             }
-            console.log("NEW Skill    " + asteroid.skill);
-            console.log("OLD Skill    " + game.skills.currentSkill);
 
              if (asteroid.skill !== game.skills.currentSkill) {
               $('#skillsLeft li#' + asteroid.skill).remove();
+              if ($('#skillsRight li#' + asteroid.skill + 'bis').length === 0) {
+                $('#skillsRight ul').append('<li id =' + asteroid.skill + 'bis>' + asteroid.skill + '</li>');
+              }
+              game.score += 50;
              }
-            game.score += 50;
             // ninja technique to make draw disapear when the skill is collected
             asteroid.explodeK = 9;
           }
@@ -163,33 +164,29 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     // method to manage collision between Player and borders of canvas
     game.collision.backgroundPlayer(game.player);
 
-    if (game.skills.collectedSkills.filter(onlyUnique).length === 14) {
+    if (game.skills.collectedSkills.length === 14) {
       game.finished = true;
     }
-
-    if (game.skills.collectedSkills.filter(onlyUnique).length < 5 && !game.skills.currentSkill) {
-      game.over = true;
-    }
-
-    // console.log(game.skills.remainingSkills);
-    // console.log(game.skills.collectedSkills);
 
 
     $('.score').html("Score: " + game.score);
     $('#score-win').html("Score: " + game.score);
     $('#score-lost').html("Score: " + game.score);
 
+    if (game.skills.collectedSkills.length < 14 && !game.skills.remainingSkills.length) {
+      game.over = true;
+      $('#score-lost').html("Il manque encore quelques compétences pour décrocher le CV ;) <br><br> Score: " + game.score)
+    }
+
     if (!game.over && !game.finished) {
-      window.requestAnimationFrame(gameLoop);
+      window.reqAnimFrame(gameLoop);
     }
     else {
       if (game.over) {
-        $('#game-over').show();
-        $('#score-win').show();
+        $('#game-over').toggle();
         $('.score').hide();
       } else if (game.finished) {
-        $('#game-finished').show();
-        $('#score-lost').show();
+        $('#game-finished').toggle();
         $('.score').hide();
       }
     }
@@ -199,6 +196,17 @@ define(['require','./background', './player', './bullet', './asteroid', './field
   return game;
 
 });
+
+window.reqAnimFrame = (function(){
+  return  window.requestAnimationFrame   ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame    ||
+      window.oRequestAnimationFrame      ||
+      window.msRequestAnimationFrame     ||
+      function(callback, e){
+        window.setTimeout(callback, 1000 / 60);
+      };
+})();
 
 
 function getRandomInt(min, max) {
