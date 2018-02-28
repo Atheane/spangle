@@ -22,7 +22,7 @@ define([], function() {
     }
   };
 
-  Collision.prototype.Field = function(arrayAsteroids, currentAsteroid) {
+  Collision.prototype.field = function(arrayAsteroids, currentAsteroid) {
     var collision = false;
     if (arrayAsteroids.length) {
       arrayAsteroids.forEach(function(a,i) {

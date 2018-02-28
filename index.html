@@ -37,7 +37,7 @@
       z-index: 0;
     }
 
-    .score {
+    .score, .score-win, .score-lost {
       position: absolute;
       right: 25%;
       top: 25%;
@@ -46,20 +46,37 @@
       font-family: 'Quantico', sans-serif;
     }
 
-    .game-over {
+    #game-over {
       position: absolute;
-      top: 30%;
-      left: 40%;
-      bottom: 40%;
-      right: 40%;
-      width: 20%;
-      height: 20%;
+      top: 35%;
+      bottom: 35%;
+      left: 35%;
+      right: 35%;
+      width: 30%;
+      height: 30%;
+      border: solid 2px #0A526E;
+      background-color: rgba(10, 82, 110, .5);
+      border-radius: 15px;
+      text-align: center;
       color: #57C5E8;
       font-family: 'Quantico', sans-serif;
-      font-size: 1.5em;
+      display: none;
+    }
+
+    #game-finished {
+      position: absolute;
+      top: 35%;
+      bottom: 35%;
+      left: 35%;
+      right: 35%;
+      width: 30%;
+      height: 30%;
+      border: solid 2px #0A526E;
+      background-color: rgba(10, 82, 110, .5);
+      border-radius: 15px;
       text-align: center;
-      padding: 0px;
-      padding-top: 20px;
+      color: #57C5E8;
+      font-family: 'Quantico', sans-serif;
       display: none;
     }
 
@@ -88,6 +105,7 @@
       background-color: rgba(10, 82, 110, .5);
       border-radius: 15px;
       text-align: center;
+      font-size: 20px;
       color: #57C5E8;
       font-family: 'Quantico', sans-serif;
     }
@@ -100,7 +118,7 @@
       left: 30%;
       font-weight: bold;
       border-radius: 15px;
-      padding: 10px 15px 10px 15px;
+      padding: 10px 25px 15px 15px;
       text-align: center;
       border: solid 1px #57C5E8;
       box-shadow: 5px 2px 2px #09222F;
@@ -116,6 +134,7 @@
 
     #jouer {
       bottom: 10%;
+      /*padding-right: 25px;*/
     }
 
     #cv {
@@ -123,15 +142,46 @@
       left: 55%;
     }
 
-    #rejouer {
-      bottom: -90px;
-      left: 38%;
-      padding-bottom: 20px;
+    #rejouer-win {
+      bottom: 10%;
+      /*padding-right: 25px;*/
+    }
+
+    #rejouer-lost {
+      bottom: 10%;
+      left: 40%;
+      /*padding-right: 25px;*/
     }
 
     h1 {
       padding: 0px;
       font-weight: lighter;
+    }
+
+    .skills {
+      position: absolute;
+      top: 10%;
+      width: 10%;
+      height: 80%;
+      color: black;
+      background-color: rgba(10, 82, 110, .5);
+      border: solid 1px #57C5E8;
+      border-radius: 15px;
+      font-family: 'Quantico', sans-serif;
+      color: #57C5E8;
+      text-align: center;
+    }
+
+    li {
+      list-style-type: none;
+     }
+
+    #skillsLeft {
+      left: 5%;
+    }
+
+    #skillsRight {
+      right: 5%;
     }
 
   </style>
@@ -141,11 +191,22 @@
 <body>
 
   <div id="container">
+
+    <div class="skills" id="skillsLeft">
+      <h3> Compétences </h3>
+      <ul></ul>
+    </div>
+
+    <div class="skills" id="skillsRight">
+      <h3> Acquises </h3>
+      <ul></ul>
+    </div>
+
     <div id="shift">
-      <h1> Asteroid Field </h1>
-      <span> Saurez-vous naviguer entre les obstacles ? Espace pour tirer, attention, l'un des astéroîdes est indestructible ! </span>
-      <a href="#" ><div class="button" id="jouer"> <i class="fa fa-rocket" aria-hidden="true"></i></div></a>
-      <a href="CV_Elodie_ROYANT.pdf" target="_blank"><div class="button" id="cv"> <i class="fa fa-user" aria-hidden="true"></i></div></a>
+      <h2> Asteroid Field </h2>
+      <p> Les asteroïdes cachent des compétences, détruisez les pour les obtenir ! </p>
+      <a href="#" ><div class="button" id="jouer"> Jouer </i></div></a>
+      <a href="CV_Elodie_ROYANT.pdf" target="_blank"><div class="button" id="cv"> CV </div></a>
     </div>
 
     <canvas id="background" >
@@ -157,16 +218,27 @@
     <canvas id="player">
       Your browser does not support canvas :(, please try with another one!
     </canvas>
+
     <div class="score">
       Score: <span id="score"></span>
     </div>
-    <div class="game-over">
-    <h2> GAME OVER </h2>
-      Score: <span id="scoreover"></span>
-      <a href="#"><div class="button" id="rejouer"> <i class="fa fa-rocket" aria-hidden="true"></i></div></a>
+
+    <div id="game-finished">
+      <br>
+      <h2> Vous avez gagné ! </h2>
+      <h3> <span id="score-win"></span> </h3>
+      <br>
+      <a href="#" ><div class="button" id="rejouer-win"> Rejouer </i></div></a>
+      <a href="CV_Elodie_ROYANT.pdf" target="_blank"><div class="button" id="cv"> CV </div></a>
     </div>
 
-
+    <div id="game-over">
+      <br>
+      <h2> GAME OVER </h2>
+      <h3> <span id="score-lost"></span> </h3>
+      <br>
+      <a href="#" ><div class="button" id="rejouer-lost"> Rejouer </i></div></a>
+    </div>
 
    <script data-main="scripts/main" src="scripts/require.js">
    </script>

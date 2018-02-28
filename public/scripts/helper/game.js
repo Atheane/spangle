@@ -1,4 +1,4 @@
-define(['require','./background', './player', './bullet', './asteroid', './field', './collision', '../jquery'], function(require, Background, Player, Bullet, Asteroid, Field, Collision, $) {
+define(['require','./background', './player', './bullet', './asteroid', './field', './collision', './skills', '../jquery'], function(require, Background, Player, Bullet, Asteroid, Field, Collision, Skills, $) {
 
   'use strict';
 
@@ -62,8 +62,12 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 
         this.collision = new Collision;
 
+        this.skills = new Skills;
+        this.skills.init();
+
         this.score = 0;
         this.over = false;
+        this.finished = false;
         // this.lives = 3;
 
         return true;
@@ -77,14 +81,11 @@ define(['require','./background', './player', './bullet', './asteroid', './field
       gameLoop(0);
     };
 
-    // this.countLives = function() {
-    //   if (!this.player.active) {
-    //     this.lives-=1;
-    //   }
-    // }
   };
 
   var game = new Game();
+
+  var skill = 'html';
 
   var gameLoop = function(timestamp) {
     if (!game.start1) { game.start1 = timestamp; }
@@ -106,26 +107,54 @@ define(['require','./background', './player', './bullet', './asteroid', './field
       game.player.draw();
       game.player.move();
       game.field.pooling();
-      game.field.draw();
-      game.field.packAsteroids.forEach(function(asteroid) {
+      game.field.packAsteroids.forEach(function(asteroid, index, array) {
+        asteroid.oldAsteroidStatus = asteroid.exploded;
+
         var collisionPlayer = game.collision.asteroid(game.player, asteroid);
 
-        if (collisionPlayer) {
-          game.player.explode();
-          game.over = true;
+        if (!game.collision.field(array, asteroid) && asteroid.active) {
+          asteroid.draw();
+          game.skills.updateCurrentSkill();
         }
+        else {
+          array.splice(index, 1);
+        }
+
+        if (collisionPlayer) {
+          if (asteroid.active && asteroid.exploded === false) {
+            game.player.explode();
+            game.over = true;
+          } else {
+            if (game.skills.collectedSkills.indexOf(asteroid.skill) === -1) {
+              game.skills.collectedSkills.push(asteroid.skill);
+            }
+            console.log("NEW Skill    " + asteroid.skill);
+            console.log("OLD Skill    " + game.skills.currentSkill);
+
+             if (asteroid.skill !== game.skills.currentSkill) {
+              $('#skillsLeft li#' + asteroid.skill).remove();
+             }
+            game.score += 50;
+            // ninja technique to make draw disapear when the skill is collected
+            asteroid.explodeK = 9;
+          }
+        }
+
+        // var bullet = game.player.packBullets[0];
+
         game.player.packBullets.forEach(function(bullet) {
-          var collisionBullet = game.collision.asteroid(bullet, asteroid);
-          console.log(bullet.active);
-          console.log(collisionBullet);
-          console.log(bullet);
-          console.log(asteroid);
+          var collisionBullet = game.collision.asteroid(asteroid, bullet);
           if (bullet.active && collisionBullet) {
             asteroid.explode();
-            game.score += 10;
             bullet.active = false;
+            asteroid.newAsteroidStatus = asteroid.exploded;
+            if (asteroid.newAsteroidStatus !== asteroid.oldAsteroidStatus) {
+              asteroid.skill = game.skills.currentSkill;
+              game.skills.updateRemainingSkills();
+            }
           }
         });
+
       });
 
       game.start2 = timestamp;
@@ -134,15 +163,35 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     // method to manage collision between Player and borders of canvas
     game.collision.backgroundPlayer(game.player);
 
-    $('#score').text(game.score);
-    $('#scoreover').text(game.score);
+    if (game.skills.collectedSkills.filter(onlyUnique).length === 14) {
+      game.finished = true;
+    }
 
-    if (!game.over) {
+    if (game.skills.collectedSkills.filter(onlyUnique).length < 5 && !game.skills.currentSkill) {
+      game.over = true;
+    }
+
+    // console.log(game.skills.remainingSkills);
+    // console.log(game.skills.collectedSkills);
+
+
+    $('.score').html("Score: " + game.score);
+    $('#score-win').html("Score: " + game.score);
+    $('#score-lost').html("Score: " + game.score);
+
+    if (!game.over && !game.finished) {
       window.requestAnimationFrame(gameLoop);
     }
     else {
-      $('.game-over').show();
-      $('.score').hide();
+      if (game.over) {
+        $('#game-over').show();
+        $('#score-win').show();
+        $('.score').hide();
+      } else if (game.finished) {
+        $('#game-finished').show();
+        $('#score-lost').show();
+        $('.score').hide();
+      }
     }
 
   };
@@ -151,7 +200,12 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 
 });
 
+
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
 }
 

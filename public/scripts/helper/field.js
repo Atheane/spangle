@@ -11,20 +11,6 @@ define(['./image', './dessin', './asteroid', './collision'], function(image, Des
 
   Field.prototype = dessin;
 
-  Field.prototype.draw = function() {
-
-    var collision = new Collision;
-
-    this.packAsteroids.forEach(function(asteroid, index, array) {
-      if (!collision.Field(array, asteroid) && asteroid.active) {
-        asteroid.draw();
-      }
-      else {
-        asteroid.init(0,0,0,0);
-      }
-    });
-  };
-
   Field.prototype.pooling = function() {
     var size = Math.ceil(getRandomInt(this.canvasWidth/24, this.canvasWidth/12));
     this.init( Math.ceil(getRandomInt(this.canvasHeight/12, this.canvasWidth-this.width)),
