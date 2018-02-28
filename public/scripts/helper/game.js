@@ -184,12 +184,10 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     }
     else {
       if (game.over) {
-        $('#game-over').show();
-        $('#score-win').show();
+        $('#game-over').toggle();
         $('.score').hide();
       } else if (game.finished) {
-        $('#game-finished').show();
-        $('#score-lost').show();
+        $('#game-finished').toggle();
         $('.score').hide();
       }
     }

@@ -28,6 +28,7 @@ require(['helper/game', 'helper/key',  'jquery'],
         $("#game-over").hide();
          if (game.init()) {
           game.start();
+          $('.score').show();
           $("#skillsLeft ul").html('<li></li>');
           game.skills.remainingSkills.forEach(function(skill){
             $("#skillsLeft ul").append('<li id=' + skill + '>' + skill + '</li>');
@@ -40,10 +41,10 @@ require(['helper/game', 'helper/key',  'jquery'],
         $("#game-finished").hide();
          if (game.init()) {
           game.start();
+          $('.score').show();
           $("#skillsLeft ul").html('<li></li>');
           game.skills.remainingSkills.forEach(function(skill){
             $("#skillsLeft ul").append('<li id=' + skill + '>' + skill + '</li>');
-
           });
           console.log("game restart");
         }
