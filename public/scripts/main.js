@@ -1,6 +1,6 @@
 
-require(['helper/game', 'helper/key', 'jquery'],
-  function(game, key, $) {
+require(['helper/game', 'helper/key',  'jquery'],
+  function(game, key,  $) {
 
 
   'use strict';
@@ -16,35 +16,50 @@ require(['helper/game', 'helper/key', 'jquery'],
       $("#shift").hide();
         if (game.init()) {
           game.start();
+          game.skills.remainingSkills.forEach(function(skill){
+            $("#skillsLeft ul").append('<li id=' + skill + '>' + skill + '</li>');
+
+          });
           console.log("game start");
         }
       });
-    });
-  });
 
-  require(['./domReady'], function (domReady) {
-    domReady(function () {
       $("#rejouer-lost").click(function() {
         $("#game-over").hide();
-        if (game.init()) {
+         if (game.init()) {
           game.start();
+          $("#skillsLeft ul").html('<li></li>');
+          game.skills.remainingSkills.forEach(function(skill){
+            $("#skillsLeft ul").append('<li id=' + skill + '>' + skill + '</li>');
+          });
           console.log("game restart");
         }
         });
+
+      $("#rejouer-win").click(function() {
+        $("#game-finished").hide();
+         if (game.init()) {
+          game.start();
+          $("#skillsLeft ul").html('<li></li>');
+          game.skills.remainingSkills.forEach(function(skill){
+            $("#skillsLeft ul").append('<li id=' + skill + '>' + skill + '</li>');
+
+          });
+          console.log("game restart");
+        }
+        });
+
+
+
+
     });
   });
 
-  require(['./domReady'], function (domReady) {
-    domReady(function () {
-      $("#rejouer-win").click(function() {
-        $("#game-finished").hide();
-        if (game.init()) {
-          game.start();
-          console.log("game restart");
-        }
-        });
-    });
-  });
+
+
+
+
+
 
 
 

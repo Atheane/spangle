@@ -158,6 +158,32 @@
       font-weight: lighter;
     }
 
+    .skills {
+      position: absolute;
+      top: 10%;
+      width: 10%;
+      height: 80%;
+      color: black;
+      background-color: rgba(10, 82, 110, .5);
+      border: solid 1px #57C5E8;
+      border-radius: 15px;
+      font-family: 'Quantico', sans-serif;
+      color: #57C5E8;
+      text-align: center;
+    }
+
+    li {
+      list-style-type: none;
+     }
+
+    #skillsLeft {
+      left: 5%;
+    }
+
+    #skillsRight {
+      right: 5%;
+    }
+
   </style>
 
 </head>
@@ -166,9 +192,19 @@
 
   <div id="container">
 
+    <div class="skills" id="skillsLeft">
+      <h3> Compétences </h3>
+      <ul></ul>
+    </div>
+
+    <div class="skills" id="skillsRight">
+      <h3> Acquises </h3>
+      <ul></ul>
+    </div>
+
     <div id="shift">
       <h2> Asteroid Field </h2>
-      <p> Les asteroïdes cachent des compétences, détruisez les pour les obtenir! </p>
+      <p> Les asteroïdes cachent des compétences, détruisez les pour les obtenir ! </p>
       <a href="#" ><div class="button" id="jouer"> Jouer </i></div></a>
       <a href="CV_Elodie_ROYANT.pdf" target="_blank"><div class="button" id="cv"> CV </div></a>
     </div>

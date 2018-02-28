@@ -125,9 +125,17 @@ define(['require','./background', './player', './bullet', './asteroid', './field
             game.player.explode();
             game.over = true;
           } else {
-            // ninja technique to make draw disapear when the skill is collected
-            game.skills.collectedSkills.push(asteroid.skill);
+            if (game.skills.collectedSkills.indexOf(asteroid.skill) === -1) {
+              game.skills.collectedSkills.push(asteroid.skill);
+            }
+            console.log("NEW Skill    " + asteroid.skill);
+            console.log("OLD Skill    " + game.skills.currentSkill);
+
+             if (asteroid.skill !== game.skills.currentSkill) {
+              $('#skillsLeft li#' + asteroid.skill).remove();
+             }
             game.score += 50;
+            // ninja technique to make draw disapear when the skill is collected
             asteroid.explodeK = 9;
           }
         }
@@ -163,6 +171,9 @@ define(['require','./background', './player', './bullet', './asteroid', './field
       game.over = true;
     }
 
+    // console.log(game.skills.remainingSkills);
+    // console.log(game.skills.collectedSkills);
+
 
     $('.score').html("Score: " + game.score);
     $('#score-win').html("Score: " + game.score);
@@ -188,6 +199,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
   return game;
 
 });
+
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
