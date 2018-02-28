@@ -111,7 +111,7 @@ define(['../jquery'], function ($) {
     image.ajax.src = '../../img/ajax.png';
     image.meteor.src = '../../img/meteor.png';
     image.ruby.src = '../../img/ruby.png';
-    image.ror.src = '../../img/ror.jpg';
+    image.ror.src = '../../img/ror.png';
     image.postgresql.src = '../../img/postgresql.png';
     image.python.src = '../../img/python.png';
     image.d3.src = '../../img/D3.png';

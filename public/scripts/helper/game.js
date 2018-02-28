@@ -161,22 +161,22 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     // method to manage collision between Player and borders of canvas
     game.collision.backgroundPlayer(game.player);
 
-    if (game.skills.collectedSkills.filter(onlyUnique).length === 14) {
+    if (game.skills.collectedSkills.length === 14) {
       game.finished = true;
     }
-
-    if (game.skills.collectedSkills.filter(onlyUnique).length < 5 && !game.skills.currentSkill) {
-      game.over = true;
-    }
-
 
 
     $('.score').html("Score: " + game.score);
     $('#score-win').html("Score: " + game.score);
     $('#score-lost').html("Score: " + game.score);
 
+    if (game.skills.collectedSkills.length < 14 && !game.skills.remainingSkills.length) {
+      game.over = true;
+      $('#score-lost').html("Il manque encore quelques compétences pour décrocher le CV ;) <br><br> Score: " + game.score)
+    }
+
     if (!game.over && !game.finished) {
-      window.requestAnimFrame(gameLoop);
+      window.reqAnimFrame(gameLoop);
     }
     else {
       if (game.over) {
@@ -194,13 +194,13 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 
 });
 
-window.requestAnimFrame = (function(){
+window.reqAnimFrame = (function(){
   return  window.requestAnimationFrame   ||
       window.webkitRequestAnimationFrame ||
       window.mozRequestAnimationFrame    ||
       window.oRequestAnimationFrame      ||
       window.msRequestAnimationFrame     ||
-      function(/* function */ callback, /* DOMElement */ element){
+      function(callback, e){
         window.setTimeout(callback, 1000 / 60);
       };
 })();
