@@ -131,6 +131,9 @@ define(['require','./background', './player', './bullet', './asteroid', './field
 
              if (asteroid.skill !== game.skills.currentSkill) {
               $('#skillsLeft li#' + asteroid.skill).remove();
+              if ($('#skillsRight li#' + asteroid.skill + 'bis').length === 0) {
+                $('#skillsRight ul').append('<li id =' + asteroid.skill + 'bis>' + asteroid.skill + '</li>');
+              }
               game.score += 50;
              }
             // ninja technique to make draw disapear when the skill is collected
