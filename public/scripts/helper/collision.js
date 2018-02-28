@@ -40,6 +40,8 @@ define([], function() {
   Collision.prototype.asteroid = function(asteroid, obj) {
     var collision = false;
     if (asteroid.x < obj.x + obj.width  && asteroid.x + asteroid.width > obj.x &&
+        asteroid.y < obj.y + obj.height && asteroid.height + asteroid.y > obj.y ||
+        asteroid.x < obj.x + 44 + obj.width  && asteroid.x + asteroid.width > obj.x + 44 &&
         asteroid.y < obj.y + obj.height && asteroid.height + asteroid.y > obj.y) {
             collision = true;
         }
