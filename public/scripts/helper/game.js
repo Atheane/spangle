@@ -169,19 +169,14 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     $('#score-win').html("Score: " + game.score);
     $('#score-lost').html("Score: " + game.score);
 
-    if (game.skills.collectedSkills.length === 14) {
+    if (game.skills.collectedSkills.length === 13) {
       game.finished = true;
     }
 
-    if (game.skills.collectedSkills.length < 14 && !game.skills.remainingSkills.length) {
+    if (game.skills.collectedSkills.length < 13 && !game.skills.remainingSkills.length) {
       game.over = true;
       $('#score-lost').html("Il manque encore quelques compétences pour décrocher le CV ;) <br><br> Score: " + game.score)
     }
-
-    console.log(game.skills.remainingSkills)
-    console.log(game.skills.collectedSkills)
-
-
 
     if (!game.over && !game.finished) {
       window.reqAnimFrame(gameLoop);
