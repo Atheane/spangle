@@ -128,7 +128,6 @@ define(['require','./background', './player', './bullet', './asteroid', './field
             if (game.skills.collectedSkills.indexOf(asteroid.skill) === -1) {
               game.skills.collectedSkills.push(asteroid.skill);
             }
-
              if (asteroid.skill !== game.skills.currentSkill) {
               $('#skillsLeft li#' + asteroid.skill).remove();
               if ($('#skillsRight li#' + asteroid.skill + 'bis').length === 0) {
@@ -164,9 +163,6 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     // method to manage collision between Player and borders of canvas
     game.collision.backgroundPlayer(game.player);
 
-    if (game.skills.collectedSkills.length === 14) {
-      game.finished = true;
-    }
 
 
     $('.score').html("Score: " + game.score);
@@ -176,6 +172,10 @@ define(['require','./background', './player', './bullet', './asteroid', './field
     if (game.skills.collectedSkills.length < 14 && !game.skills.remainingSkills.length) {
       game.over = true;
       $('#score-lost').html("Il manque encore quelques compétences pour décrocher le CV ;) <br><br> Score: " + game.score)
+    }
+
+    if (game.skills.collectedSkills.length === 14) {
+      game.finished = true;
     }
 
     if (!game.over && !game.finished) {
@@ -190,6 +190,7 @@ define(['require','./background', './player', './bullet', './asteroid', './field
         $('.score').hide();
       }
     }
+
 
   };
 
